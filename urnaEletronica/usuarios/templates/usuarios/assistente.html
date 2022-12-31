@@ -1,0 +1,24 @@
+{% extends "usuarios/base.html" %}
+
+{% block title %}Urna Eletrônica - Assistente de Sala{% endblock title %}
+
+{% block content %}
+
+<div class='row'>
+    <div class='col-md-4 mx-auto'>
+
+        <h3>Urna Eletrônica - Assistente de Sala</h3>
+        <hr>
+
+        <p>
+            <a href="{% url 'selecionar-eleitor' %}"><button>Selecionar Eleitor</button></a>
+        </p>
+
+        <p>
+            <a href="{% url 'logout' %}"><button>Logout</button></a>
+        </p>
+
+    </div>
+</div>
+
+{% endblock content %}

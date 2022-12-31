@@ -1,0 +1,29 @@
+{% extends "votar/base.html" %}
+
+{% block title %}Urna Eletrônica - Selecionar Eleitor{% endblock title %}
+
+{% block content %}
+
+<div class='row'>
+    <div class='col-md-4 mx-auto'>
+
+        <h3>Urna Eletrônica - Selecionar Eleitor</h3>
+        <hr>
+
+        <form method="POST">
+            {% csrf_token %}
+            
+            <input type='text' name='urna' value='{{ urna }}'>
+
+
+            <button type="submit">Votar</button>
+        </form>
+
+        <p>
+            <a href="{% url 'logout' %}"><button>Logout</button></a>
+        </p>
+
+    </div>
+</div>
+
+{% endblock content %}

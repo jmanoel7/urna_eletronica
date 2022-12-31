@@ -1,0 +1,30 @@
+{% extends "usuarios/base.html" %}
+
+{% block title %}Urna Eletrônica - Gerente de Sala{% endblock title %}
+
+{% block content %}
+
+<div class='row'>
+    <div class='col-md-4 mx-auto'>
+
+        <h3>Urna Eletrônica - Gerente de Sala</h3>
+        <hr>
+
+        <p>
+            <a href='#a-fazer'><button>Iniciar Votação</button></a>
+            {% comment %} <!-- a href="{% url 'iniciar-votacao' %}"><button>Iniciar Votação</button></a --> {% endcomment %}
+        </p>
+
+        <p>
+            <a href='#a-fazer'><button>Terminar Votação</button></a>
+            {% comment %} <!-- a href="{% url 'terminar-votacao' %}"><button>Terminar Votação</button></a --> {% endcomment %}
+        </p>
+
+        <p>
+            <a href="{% url 'logout' %}"><button>Logout</button></a>
+        </p>
+
+    </div>
+</div>
+
+{% endblock content %}
