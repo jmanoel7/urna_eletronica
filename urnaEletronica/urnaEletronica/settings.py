@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     'iniciarVotacao',
     'terminarVotacao',
     'eleitor',
-    'politico',
     'votar',
     'urna',
     'usuarios',

@@ -1,5 +1,5 @@
 from django.db import models
-from urna.models import Urna
+from urna.models import Urna, Voto
 
 class Eleitor(models.Model):
     nome = models.CharField(max_length=100, unique=True)
@@ -11,6 +11,8 @@ class Eleitor(models.Model):
     uf = models.CharField(max_length=2)
     data_emissao = models.DateField()
     urna = models.ForeignKey(Urna, on_delete=models.PROTECT, related_name='eleitores')
+    voto = models.ForeignKey(Voto, on_delete=models.PROTECT, related_name='eleitores',
+        blank=True, null=True, default=None)
 
     def __str__(self):
         return self.nome

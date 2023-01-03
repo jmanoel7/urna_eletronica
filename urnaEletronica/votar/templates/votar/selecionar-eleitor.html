@@ -2,6 +2,13 @@
 
 {% block title %}Urna Eletrônica - Selecionar Eleitor{% endblock title %}
 
+{% block head %}
+
+    {% load static %}
+    <script type="text/javascript" src="{% static 'js/selecionar-eleitor.js' %}"></script>
+
+{% endblock head %}
+
 {% block content %}
 
 <div class='row'>
@@ -13,10 +20,30 @@
         <form method="POST">
             {% csrf_token %}
             
-            <input type='text' name='urna' value='{{ urna }}'>
+            <p>
+                <label for="urna">Urna:</label><br/>
+                <input type='text' name='urna' id='urna' value='{{ urna }}' size='50' readonly>
+            </p>
 
+            <p>
+                <label for="titulo_eleitor">Escolha um eleitor:</label><br/>
+                <select name="titulo_eleitor" id="titulo_eleitor">
+                    {% for eleitor in eleitores %}
+                        <option value="{{ eleitor.titulo_eleitor }}">{{ eleitor.nome }}</option>
+                    {% endfor %}
+                </select>
+            </p>
 
-            <button type="submit">Votar</button>
+            <p>
+                <input type='checkbox' id='voto' name='voto' value='Voto' checked>
+                <label for='voto'>Voto</label><br>
+                <input type='checkbox' id='abstencao' name='abstencao' value='Abstenção'>
+                <label for='abstencao'>Abstenção</label>
+            </p>
+
+            <p>
+                <button type="submit">Registrar</button>
+            </p>
         </form>
 
         <p>
