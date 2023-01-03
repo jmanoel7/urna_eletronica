@@ -1,10 +1,11 @@
 $(document).ready(function(){
-    // $("#voto").click(function(){
-    //     $('#voto').prop("checked", true);
-    //     $('#abstencao').prop("checked", false);
-    // });
-    // $("#abstencao").click(function(){
-    //     $('#abstencao').prop("checked", true);
-    //     $('#voto').prop("checked", false);
-    // });
+    var base = '_';
+    $("#dig1").click(function(){
+        if ( $('#num1').text() == base ) {
+            $('#num1').text( $('#dig1').text() );
+            $('#num1').removeClass('pisca');
+            $('#num2').text( base );
+            $('#num2').addClass('pisca');
+        } 
+    });
 });

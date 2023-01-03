@@ -14,9 +14,9 @@ def eleitor(request):
             titulo_eleitor = request.POST.get('titulo_eleitor')
             urna = request.POST.get('urna')
             votos = Voto.objects.filter(cargo = 'Presidente da República')
-            print(titulo_eleitor)
-            print(urna)
-            print(votos[0].cargo)
+            # print(titulo_eleitor)
+            # print(urna)
+            # print(votos[0].cargo)
             return render(request, 'votar/urna.html',
                 { 'titulo_eleitor': titulo_eleitor, 'urna': urna, 'votos': votos }
             )
