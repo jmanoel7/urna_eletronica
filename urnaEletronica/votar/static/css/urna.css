@@ -25,7 +25,7 @@
   }
   
   .tela {
-    width: 550px;
+    width: 625px;
     height: 320px;
     background: linear-gradient(to right, #e8e8e8, #c1c1c1);
     border: 2px solid #555;
@@ -108,18 +108,18 @@
     padding-top: 50px;
     height: 100px;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    align-items: normal;
+    justify-content: normal;
   }
 
   .d-1-foto {
     display: block;
-    margin-left: 55px;
-    padding-top: 25px;
-    padding-bottom: 25px;
+    margin-left: 30px;
     width: 128px;
     height: 128px;
     border: 1px solid #000;
+    align-items: normal;
+    justify-content: normal;
   }
 
   .d-1-2 {
@@ -144,18 +144,40 @@
   }
   
   .d-1-3 {
-    flex: 1;
+    flex: 3;
     line-height: 30px;
   }
   
   .d-1-right {
     width: 160px;
-    padding-top: 10px;
   }
   
   .d-2 {
-    height: 65px;
-    font-size: 14px;
+    display: inline-flex;
+    vertical-align: top;
     border-top: 2px solid #000;
     padding-left: 10px;
+    padding-right: 10px;
   }
+
+  .msg {
+    height: 65px;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+  }
+
+  .color {
+    color: #F00;
+    margin-left: 12.5px;
+    padding-left: 12.5px;
+    border-left: 2px solid red;
+  }
+
+  .esconder {
+    visibility: hidden;
+  }
+
+  .mostrar {
+    visibility: visible;
+  }
+  

@@ -29,7 +29,7 @@
                 <label for="titulo_eleitor">Escolha um eleitor:</label><br/>
                 <select name="titulo_eleitor" id="titulo_eleitor">
                     {% for eleitor in eleitores %}
-                        <option value="{{ eleitor.titulo_eleitor }}">{{ eleitor.nome }}</option>
+                        <option value="{{ eleitor.titulo_eleitor }}">{{ eleitor }}</option>
                     {% endfor %}
                 </select>
             </p>

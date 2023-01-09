@@ -20,9 +20,3 @@ def eleitor(request):
         abstencao = request.POST.get('abstencao')
         if abstencao:
             return HttpResponse('<h1>%s</h1>' % abstencao)
-
-def registrar(request):
-    if request.method == 'POST':
-        politico = request.POST.get('politico')
-        # politico = request.POST.get('titulo_eleitor')
-    return HttpResponse('<h1>%s</h1>' % politico)

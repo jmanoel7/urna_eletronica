@@ -15,4 +15,7 @@ class Eleitor(models.Model):
         blank=True, null=True, default=None)
 
     def __str__(self):
-        return self.nome
+        return ("Nome: %s, Título de Eleitor: %s") % (self.nome, self.titulo_eleitor)
+
+    class Meta:
+        verbose_name_plural = "Eleitores"

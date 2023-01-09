@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+from os import path as ospath
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -70,6 +71,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
             ],
         },
     },
@@ -131,7 +133,8 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # ROOT MEDIA FILES
-MEDIA_ROOT = '/home/joaomanoel/git-esab/urna_eletronica/img'
+MEDIA_URL = '/mediafiles/'
+MEDIA_ROOT = ospath.join(ospath.dirname(BASE_DIR), 'mediafiles_cdn')
 
 # LOGIN
 LOGIN_REDIRECT_URL = 'index'
