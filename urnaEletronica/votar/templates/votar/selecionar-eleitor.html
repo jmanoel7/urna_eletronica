@@ -17,7 +17,7 @@
         <h3>Urna Eletrônica - Selecionar Eleitor</h3>
         <hr>
 
-        <form method="POST">
+        <form action="{% url 'votar-na-urna' %}" method="GET">
             {% csrf_token %}
             
             <p>

@@ -4,8 +4,8 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    # path('votar/', views.votar, name='votar-urna'),
+    path('votar/', views.votar, name='votar-na-urna'),
     # path('abstencao/', views.abstencao, name='abstencao'),
     path('eleitor/', views.eleitor, name='selecionar-eleitor'),
-    path('registrar/', views.registrar, name='registrar-voto')
+    # path('registrar/', views.registrar, name='registrar-voto')
 ]  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -23,8 +23,16 @@
               <div id="num2" class="numero"></div>
             </div>
             <div class="d-1-3">
-              Nome: <span id="politico"></span><br>
-              Partido: <span id="partido"></span><br>
+              Nome: <span id="politico" name="politico"></span><br>
+              Partido: <span id="partido" name="partido"></span><br>
+              <span id="titulo_eleitor" name="titulo_eleitor" hidden>{{ titulo_eleitor }}</span>
+              <span id="urna" name="urna" hidden>{{ urna }}</span>
+              <span id="votos" name="votos" hidden>{{ votos }}</span>
+              <!-- select id="votos" name="votos" hidden>
+                    {% for voto in votos %}
+                        <option id="voto" name="voto" value="{{ voto.partido }}" hidden>{{ voto.politico }}</option>
+                    {% endfor %}
+                </select -->
             </div>
           </div>
           <div class="d-1-center">
@@ -32,7 +40,7 @@
               <span>{{ votos.0.cargo|upper }}</span>
             </div>
             <div class="d-1-foto">
-              <img id="foto" src=''>
+              <img id="foto" name="foto" src=''>
             </div>
           </div>
           <div class="d-1-right">
@@ -46,7 +54,16 @@
                 CONFIRMA para CONFIRMAR este voto <br />
                 CORRIGE para REINICIAR este voto
             </div>
+            
+            {% if erro %}
+
+            <div id="erro" class="msg color mostrar">
+            
+            {% else %}
+            
             <div id="erro" class="msg color esconder">
+            
+            {% endif %}
                 Erro! Voto inválido: <br />
                 Escolha um candidato, ou vote NULO / BRANCO <br />
                 Tecle CORRIGE para REINICIAR este voto
@@ -78,7 +95,7 @@
         <div class="teclado-linha">
           <div id="btn-branco" class="teclado-botao botao-branco">BRANCO</div>
           <div id="btn-corrige" class="teclado-botao botao-corrige">CORRIGE</div>
-          <div id="btn-confirma" class="teclado-botao botao-confirma">CONFIRMA</div>
+          <button id="btn-confirma" class="teclado-botao botao-confirma" type="submit" formaction="{% url 'votar-na-urna' %}" formmethod="post">CONFIRMA</button>
         </div>
       </div>
     </div>
@@ -99,7 +116,9 @@ $(document).ready(function(){
         } else if ( num2 == base ) {
             $('#num2').text( dig1 );
             $('#num2').removeClass('pisca');
-            get_resultado();
+            if (! get_resultado() ) {
+                get_erro();
+            }
         }
     });
     $("#dig2").click(function(){
@@ -116,7 +135,9 @@ $(document).ready(function(){
         } else if ( num2 == base ) {
             $('#num2').text( dig2 );
             $('#num2').removeClass('pisca');
-            get_resultado();
+            if (! get_resultado() ) {
+                get_erro();
+            }
         }
     });
     $("#dig3").click(function(){
@@ -133,7 +154,9 @@ $(document).ready(function(){
         } else if ( num2 == base ) {
             $('#num2').text( dig3 );
             $('#num2').removeClass('pisca');
-            get_resultado();
+            if (! get_resultado() ) {
+                get_erro();
+            }
         }
     });
     $("#dig4").click(function(){
@@ -150,7 +173,9 @@ $(document).ready(function(){
         } else if ( num2 == base ) {
             $('#num2').text( dig4 );
             $('#num2').removeClass('pisca');
-            get_resultado();
+            if (! get_resultado() ) {
+                get_erro();
+            }
         }
     });
     $("#dig5").click(function(){
@@ -167,7 +192,9 @@ $(document).ready(function(){
         } else if ( num2 == base ) {
             $('#num2').text( dig5 );
             $('#num2').removeClass('pisca');
-            get_resultado();
+            if (! get_resultado() ) {
+                get_erro();
+            }
         }
     });
     $("#dig6").click(function(){
@@ -184,7 +211,9 @@ $(document).ready(function(){
         } else if ( num2 == base ) {
             $('#num2').text( dig6 );
             $('#num2').removeClass('pisca');
-            get_resultado();
+            if (! get_resultado() ) {
+                get_erro();
+            }
         }
     });
     $("#dig7").click(function(){
@@ -201,7 +230,9 @@ $(document).ready(function(){
         } else if ( num2 == base ) {
             $('#num2').text( dig7 );
             $('#num2').removeClass('pisca');
-            get_resultado();
+            if (! get_resultado() ) {
+                get_erro();
+            }
         }
     });
     $("#dig8").click(function(){
@@ -218,7 +249,9 @@ $(document).ready(function(){
         } else if ( num2 == base ) {
             $('#num2').text( dig8 );
             $('#num2').removeClass('pisca');
-            get_resultado();
+            if (! get_resultado() ) {
+                get_erro();
+            }
         }
     });
     $("#dig9").click(function(){
@@ -235,7 +268,9 @@ $(document).ready(function(){
         } else if ( num2 == base ) {
             $('#num2').text( dig9 );
             $('#num2').removeClass('pisca');
-            get_resultado();
+            if (! get_resultado() ) {
+                get_erro();
+            }
         }
     });
     $("#dig0").click(function(){
@@ -252,7 +287,9 @@ $(document).ready(function(){
         } else if ( num2 == base ) {
             $('#num2').text( dig0 );
             $('#num2').removeClass('pisca');
-            get_resultado();
+            if (! get_resultado() ) {
+                get_erro();
+            }
         }
     });
     $("#btn-branco").click(function(){
@@ -277,51 +314,52 @@ $(document).ready(function(){
         $('#partido').text('');
         $('#foto').attr('src', '');        
     });
-    $("#btn-confirma").click(function(){
-        let politico_v = $('#politico').text();
+    function get_erro() {
+        let politico = $('#politico').text();
+        politico = politico.trim();
         const politicos = ['Branco', 'Nulo'];
-        {% for politico in votos.politico %}
-            politicos.push(politico);
+        {% for voto in votos %}
+            politicos.push("{{ voto.politico.strip }}");
         {% endfor %}
-        let politico = politicos.find(encontra_politico);
-        function encontra_politico(value, index, array) {
-            return value == politico_v;
+        let c = 0;
+        for (let x in politicos) {
+            if (politicos[x] == politico) {
+                c = 1;
+                break;
+            }
         }
-        if( politico ) {
+        if ( c == 1 && politico.length > 0 ) {
             $('#erro').addClass('esconder');
             $('#erro').removeClass('mostrar');
-            /* $.post("{% url 'registrar-voto' %}",{
-                'votos': votos,
-                'politico': politico,
-                'titulo_eleitor': titulo_eleitor,
-                'urna': urna
-            }); */
         } else {
             $('#erro').addClass('mostrar');
             $('#erro').removeClass('esconder');
         }
-    });
+    }
     function get_resultado() {
         let num1 = $('#num1').text();
         let num2 = $('#num2').text();
+        let partido = num1 + num2;
         if ( num1 != base && num2 != base ) {
-            let partido = num1 + num2;
             let controle = 0;
             {% for voto in votos %}
-            if ( partido == "{{ voto.num_partido }}" ) {
-                controle = 1;
-                $('#politico').text( "{{ voto.politico }}" );
-                $('#partido').text( "{{ voto.partido }}" );
-                $('#foto').attr('src', '{{ MEDIA_URL }}{{voto.foto}}');
-            }
-            if ( controle == 1 ) {
-                return true;
-            }
+                if ( partido == "{{ voto.num_partido }}" ) {
+                    controle = 1;
+                    $('#politico').text( "{{ voto.politico }}" );
+                    $('#partido').text( "{{ voto.partido }}" );
+                    $('#foto').attr('src', '{{ MEDIA_URL }}{{voto.foto}}');
+                }
+                if ( controle == 1 ) {
+                    return true;
+                }
             {% endfor %}
         }
-        $('#politico').text( "Nulo" );
-        $('#partido').text( "NULO" );
-        $('#foto').attr('src', '{{ MEDIA_URL }}nulo.png');
+        if (partido.length == 2) {
+            $('#politico').text( "Nulo" );
+            $('#partido').text( "NULO" );
+            $('#foto').attr('src', '{{ MEDIA_URL }}nulo.png');
+            return true;
+        }
         return false;
     }
 });
