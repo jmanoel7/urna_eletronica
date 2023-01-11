@@ -26,12 +26,15 @@ def votar(request):
         titulo_eleitor = request.POST.get('titulo_eleitor')
         urna = request.POST.get('urna')
         votos = request.POST.get('votos')
-        print(votos)
-        print('Eu aqui!!!')
         politico = request.POST.get('politico')
         partido = request.POST.get('partido')
         foto = request.POST.get('foto')
-        if politico.length == 0 or partido.length != 2:
+        print('politico: %s' % politico)
+        print('partido: %s' % partido)
+        print('titulo_eleitor: %s' % titulo_eleitor)
+        print('urna: %s' % urna)
+        print('votos: %s' % votos)
+        if not politico or not partido:
             return render(request, 'votar/urna.html',
                 {
                     'titulo_eleitor': titulo_eleitor,
@@ -43,6 +46,7 @@ def votar(request):
                     'foto': foto,
                 }
             )
+        return HttpResponse('<h1>Político: %s</h1><br><h2>Partido: %s</h2>' % (politico, partido))
 # def registrar(request):
 #     if request.method == 'POST':
 #         politico = request.POST.get('politico')

@@ -23,11 +23,8 @@
               <div id="num2" class="numero"></div>
             </div>
             <div class="d-1-3">
-              Nome: <span id="politico" name="politico"></span><br>
-              Partido: <span id="partido" name="partido"></span><br>
-              <span id="titulo_eleitor" name="titulo_eleitor" hidden>{{ titulo_eleitor }}</span>
-              <span id="urna" name="urna" hidden>{{ urna }}</span>
-              <span id="votos" name="votos" hidden>{{ votos }}</span>
+              Nome: <span class="politico"></span><br>
+              Partido: <span class="partido"></span><br>
               <!-- select id="votos" name="votos" hidden>
                     {% for voto in votos %}
                         <option id="voto" name="voto" value="{{ voto.partido }}" hidden>{{ voto.politico }}</option>
@@ -40,7 +37,7 @@
               <span>{{ votos.0.cargo|upper }}</span>
             </div>
             <div class="d-1-foto">
-              <img id="foto" name="foto" src=''>
+              <img class="foto" src=''>
             </div>
           </div>
           <div class="d-1-right">
@@ -93,9 +90,21 @@
         </div>
 
         <div class="teclado-linha">
-          <div id="btn-branco" class="teclado-botao botao-branco">BRANCO</div>
-          <div id="btn-corrige" class="teclado-botao botao-corrige">CORRIGE</div>
-          <button id="btn-confirma" class="teclado-botao botao-confirma" type="submit" formaction="{% url 'votar-na-urna' %}" formmethod="post">CONFIRMA</button>
+            <div id="btn-branco" class="teclado-botao botao-branco">BRANCO</div>
+            <div id="btn-corrige" class="teclado-botao botao-corrige">CORRIGE</div>
+
+                <form action="{% url 'votar-na-urna' %}" method="POST">{% csrf_token %}
+
+                    <input type="text" id="titulo_eleitor" name="titulo_eleitor" value="{{ titulo_eleitor }}" hidden readonly>
+                    <input type="text" id="urna" name="urna" value="{{ urna }}" hidden readonly>
+                    <input type="text" id="votos" name="votos" value="{{ votos }}" hidden readonly>
+                    <input type="text" id="politico" name="politico" value="" hidden>
+                    <input type="text" id="partido" name="partido" value="" hidden>
+                    <input type="image" id="foto" name="foto" src="" hidden>
+                    <button id="btn-confirma" class="teclado-botao botao-confirma" type="submit">CONFIRMA</button>
+
+                </form>
+        
         </div>
       </div>
     </div>
@@ -299,9 +308,12 @@ $(document).ready(function(){
         $('#num2').text('');
         $('#num1').removeClass('pisca');
         $('#num2').removeClass('pisca');
-        $('#politico').text( "Branco" );
-        $('#partido').text( "BRANCO" );
+        $('#politico').attr( 'value', 'Branco' );
+        $('#partido').attr( 'value', 'BRANCO' );
         $('#foto').attr('src', '{{ MEDIA_URL }}branco.png');
+        $('span.politico').text( 'Branco' );
+        $('span.partido').text( 'BRANCO' );
+        $('span.foto').attr('src', '{{ MEDIA_URL }}branco.png');
     });
     $("#btn-corrige").click(function(){
         $('#erro').addClass('esconder');
@@ -310,9 +322,12 @@ $(document).ready(function(){
         $('#num1').addClass('pisca');
         $('#num2').text('');
         $('#num2').removeClass('pisca');
-        $('#politico').text('');
-        $('#partido').text('');
-        $('#foto').attr('src', '');        
+        $('#politico').attr('value', '');
+        $('#partido').attr('value', '');
+        $('#foto').attr('src', '');
+        $('span.politico').text('');
+        $('span.partido').text('');
+        $('img.foto').attr('src', '');        
     });
     function get_erro() {
         let politico = $('#politico').text();
@@ -345,9 +360,12 @@ $(document).ready(function(){
             {% for voto in votos %}
                 if ( partido == "{{ voto.num_partido }}" ) {
                     controle = 1;
-                    $('#politico').text( "{{ voto.politico }}" );
-                    $('#partido').text( "{{ voto.partido }}" );
+                    $('#politico').attr( 'value', '{{ voto.politico }}' );
+                    $('#partido').attr( 'value', '{{ voto.partido }}' );
                     $('#foto').attr('src', '{{ MEDIA_URL }}{{voto.foto}}');
+                    $('span.politico').text( '{{ voto.politico }}' );
+                    $('span.partido').text( '{{ voto.partido }}' );
+                    $('img.foto').attr('src', '{{ MEDIA_URL }}{{voto.foto}}');
                 }
                 if ( controle == 1 ) {
                     return true;
@@ -355,9 +373,12 @@ $(document).ready(function(){
             {% endfor %}
         }
         if (partido.length == 2) {
-            $('#politico').text( "Nulo" );
-            $('#partido').text( "NULO" );
+            $('#politico').attr( 'value', 'Nulo' );
+            $('#partido').attr( 'value', 'NULO' );
             $('#foto').attr('src', '{{ MEDIA_URL }}nulo.png');
+            $('span.politico').text( 'Nulo' );
+            $('span.partido').text( 'NULO' );
+            $('img.foto').attr('src', '{{ MEDIA_URL }}nulo.png');
             return true;
         }
         return false;
