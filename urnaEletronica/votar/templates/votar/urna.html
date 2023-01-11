@@ -100,6 +100,7 @@
                     <input type="text" id="votos" name="votos" value="{{ votos }}" hidden readonly>
                     <input type="text" id="politico" name="politico" value="" hidden>
                     <input type="text" id="partido" name="partido" value="" hidden>
+                    <input type="text" id="num_partido" name="num_partido" value="" hidden>
                     <input type="image" id="foto" name="foto" src="" hidden>
                     <button id="btn-confirma" class="teclado-botao botao-confirma" type="submit">CONFIRMA</button>
 
@@ -310,6 +311,7 @@ $(document).ready(function(){
         $('#num2').removeClass('pisca');
         $('#politico').attr( 'value', 'Branco' );
         $('#partido').attr( 'value', 'BRANCO' );
+        $('#num_partido').attr( 'value', '  ' );
         $('#foto').attr('src', '{{ MEDIA_URL }}branco.png');
         $('span.politico').text( 'Branco' );
         $('span.partido').text( 'BRANCO' );
@@ -324,6 +326,7 @@ $(document).ready(function(){
         $('#num2').removeClass('pisca');
         $('#politico').attr('value', '');
         $('#partido').attr('value', '');
+        $('#num_partido').attr('value', '');
         $('#foto').attr('src', '');
         $('span.politico').text('');
         $('span.partido').text('');
@@ -362,6 +365,7 @@ $(document).ready(function(){
                     controle = 1;
                     $('#politico').attr( 'value', '{{ voto.politico }}' );
                     $('#partido').attr( 'value', '{{ voto.partido }}' );
+                    $('#num_partido').attr( 'value', "{{ voto.num_partido }}" );
                     $('#foto').attr('src', '{{ MEDIA_URL }}{{voto.foto}}');
                     $('span.politico').text( '{{ voto.politico }}' );
                     $('span.partido').text( '{{ voto.partido }}' );
@@ -375,6 +379,7 @@ $(document).ready(function(){
         if (partido.length == 2) {
             $('#politico').attr( 'value', 'Nulo' );
             $('#partido').attr( 'value', 'NULO' );
+            $('#num_partido').attr( 'value', partido );
             $('#foto').attr('src', '{{ MEDIA_URL }}nulo.png');
             $('span.politico').text( 'Nulo' );
             $('span.partido').text( 'NULO' );

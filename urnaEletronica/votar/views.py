@@ -28,13 +28,14 @@ def votar(request):
         votos = request.POST.get('votos')
         politico = request.POST.get('politico')
         partido = request.POST.get('partido')
+        num_partido = request.POST.get('num_partido')
         foto = request.POST.get('foto')
         print('politico: %s' % politico)
         print('partido: %s' % partido)
         print('titulo_eleitor: %s' % titulo_eleitor)
         print('urna: %s' % urna)
         print('votos: %s' % votos)
-        if not politico or not partido:
+        if politico is None or partido is None:
             return render(request, 'votar/urna.html',
                 {
                     'titulo_eleitor': titulo_eleitor,
@@ -43,10 +44,67 @@ def votar(request):
                     'erro': True,
                     'politico': politico,
                     'partido': partido,
+                    'num_partido': num_partido,
                     'foto': foto,
                 }
             )
-        return HttpResponse('<h1>Político: %s</h1><br><h2>Partido: %s</h2>' % (politico, partido))
+        if len(politico) == 0 or len(partido) == 0:
+            return render(request, 'votar/urna.html',
+                {
+                    'titulo_eleitor': titulo_eleitor,
+                    'urna': urna,
+                    'votos': votos,
+                    'erro': True,
+                    'politico': politico,
+                    'partido': partido,
+                    'num_partido': num_partido,
+                    'foto': foto,
+                }
+            )
+        if (politico == 'Branco' and partido != 'BRANCO') or \
+            (politico != 'Branco' and partido == 'BRANCO'):
+            return render(request, 'votar/urna.html',
+                {
+                    'titulo_eleitor': titulo_eleitor,
+                    'urna': urna,
+                    'votos': votos,
+                    'erro': True,
+                    'politico': politico,
+                    'partido': partido,
+                    'num_partido': num_partido,
+                    'foto': foto,
+                }
+            )
+        if (politico == 'Nulo' and partido != 'NULO') or \
+            (politico != 'Nulo' and partido == 'NULO'):
+            return render(request, 'votar/urna.html',
+                {
+                    'titulo_eleitor': titulo_eleitor,
+                    'urna': urna,
+                    'votos': votos,
+                    'erro': True,
+                    'politico': politico,
+                    'partido': partido,
+                    'num_partido': num_partido,
+                    'foto': foto,
+                }
+            )
+        politico_bd = Voto.objects.get(politico=politico, partido=partido, num_partido=num_partido)
+        if politico_bd is None:
+            return render(request, 'votar/urna.html',
+                {
+                    'titulo_eleitor': titulo_eleitor,
+                    'urna': urna,
+                    'votos': votos,
+                    'erro': True,
+                    'politico': politico,
+                    'partido': partido,
+                    'num_partido': num_partido,
+                    'foto': foto,
+                }
+            )
+        #return HttpResponse('<h1>Político: %s</h1><br><h2>Partido: %s</h2>' % (politico_bd, partido))
+        return HttpResponse('<h1>Político: %s</h1>' % politico_bd)
 # def registrar(request):
 #     if request.method == 'POST':
 #         politico = request.POST.get('politico')

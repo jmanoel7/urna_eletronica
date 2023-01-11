@@ -21,7 +21,7 @@ class Voto(models.Model):
     politico = models.CharField(max_length=100, unique=True)
     foto = models.ImageField()
     cargo = models.CharField(max_length=50)
-    partido = models.CharField(max_length= 10)
+    partido = models.CharField(max_length=10)
     num_partido = models.CharField(max_length=2)
     branco = models.BooleanField(default=None, blank=True, null=True)
     nulo = models.BooleanField(default=None, blank=True, null=True)
