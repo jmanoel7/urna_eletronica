@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     'crispy_bootstrap5',
     'iniciarVotacao',
     'terminarVotacao',
-    'eleitor',
     'votar',
     'urna',
     'usuarios',

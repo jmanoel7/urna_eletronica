@@ -5,7 +5,7 @@
 {% block head %}
 
     {% load static %}
-    <link rel="stylesheet" href="{% static 'css/voto.css' %}">
+    <link rel="stylesheet" href="{% static 'css/registrar-voto.css' %}">
 
 {% endblock head %}
 
@@ -69,6 +69,14 @@
             <div class="teclado-botao botao-corrige">CORRIGE</div>
             <div class="teclado-botao botao-confirma">CONFIRMA</div>        
         </div>
+      </div>
+    </div>
+    <div class="btn">
+      <div class="btn-1-2">
+        <a href="{% url 'index' %}"><button>HOME</button></a>
+      </div>
+      <div class="btn-1-2">
+        <a href="{% url 'logout' %}"><button>Logout</button></a>
       </div>
     </div>
 <script type="text/javascript">
