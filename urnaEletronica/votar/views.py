@@ -98,7 +98,7 @@ def votar(request):
                 }
             )
         elif politico == 'Branco' and partido == 'BRANCO':
-            foto = politicos.
+            politico_id 
             branco_bd = Politico.objects.create(
                 politico=politico, foto=foto, cargo=cargo,
                 partido=partido, num_partido=num_partido, branco=True,
