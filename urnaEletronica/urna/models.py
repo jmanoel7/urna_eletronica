@@ -60,17 +60,16 @@ class Eleitor(models.Model):
 
 class Politico(models.Model):
     politico = models.CharField(max_length=100, unique=True)
-    foto = models.ImageField()
+    foto = models.ImageField(unique=True)
     partido = models.CharField(max_length=10)
     num_partido = models.CharField(max_length=2)
     cargo = models.CharField(max_length=50)
-    te_politico = models.CharField(max_length=12, unique=True)
     urna = models.ForeignKey(Urna, on_delete=models.PROTECT, related_name='politicos')
 
     class Meta:
         constraints = [
             UniqueConstraint(
-                fields=['politico', 'foto', 'partido', 'num_partido', 'cargo', 'te_politico'],
+                fields=['politico', 'partido', 'num_partido', 'cargo'],
                 name='politico_unico',
             ),
         ]
@@ -84,15 +83,10 @@ class Voto(models.Model):
     eleitor = models.ForeignKey(Eleitor, on_delete=models.PROTECT, related_name='eleitores')
     politico = models.ForeignKey(Politico, on_delete=models.PROTECT, related_name='politicos')
     cargo = models.CharField(max_length=50)
-    abstencao = models.BooleanField(default=None, blank=True, null=True)
     urna = models.ForeignKey(Urna, on_delete=models.PROTECT, related_name='urnas')
 
     class Meta:
         constraints = [
-            UniqueConstraint(
-                fields=['eleitor', 'abstencao'],
-                name='abstencao_unica',
-            ),
             UniqueConstraint(
                 fields=['eleitor', 'politico', 'cargo'],
                 name='voto_unico',

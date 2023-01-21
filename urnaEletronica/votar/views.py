@@ -39,10 +39,6 @@ def votar(request):
         politico = request.POST.get('politico')
         partido = request.POST.get('partido')
         num_partido = request.POST.get('num_partido')
-        # print('partido: %s' % partido)
-        # print('titulo_eleitor: %s' % titulo_eleitor)
-        # print('urna: %s' % urna)
-        # print('votos: %s' % votos)
         if politico is None or partido is None:
             return render(request, 'votar/urna.html',
                 {
@@ -98,22 +94,22 @@ def votar(request):
                 }
             )
         elif politico == 'Branco' and partido == 'BRANCO':
-            politico_id 
-            branco_bd = Politico.objects.create(
-                politico=politico, foto=foto, cargo=cargo,
-                partido=partido, num_partido=num_partido, branco=True,
-                nulo=False, abstencao=False, te_eleitor=titulo_eleitor,
-                urna=urna,
+            politico_bd = Politico.objects.get(
+                politico=politico,
+                partido=partido,
+                num_partido=num_partido,
+                cargo=cargo,
+                urna_id = urna_id,
             )
-            branco_bd.save()
+            politico_bd.save()
             return render(request, 'votar/registrar-voto.html',
                 {
-                    'num_partido_1': branco_bd.num_partido[0],
-                    'num_partido_2': branco_bd.num_partido[1],
-                    'politico': branco_bd.politico,
-                    'partido': branco_bd.partido,
-                    'cargo': branco_bd.cargo,
-                    'foto': branco_bd.foto,
+                    'num_partido_1': politico_bd.num_partido[0],
+                    'num_partido_2': politico_bd.num_partido[1],
+                    'politico': politico_bd.politico,
+                    'partido': politico_bd.partido,
+                    'cargo': politico_bd.cargo,
+                    'foto': politico_bd.foto,
                 }
             )
         elif politico == 'Nulo' and partido == 'NULO':
