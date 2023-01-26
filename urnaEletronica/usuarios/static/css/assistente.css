@@ -1,0 +1,21 @@
+.msg-erro-1 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 70px;
+  font-size: 16px;
+  font-family: Arial, sans-serif;
+  color: rgb(150, 47, 47);
+  border-left: 2px solid rgb(150, 47, 47);
+}
+
+/*
+.esconder {
+  visibility: hidden;
+}
+
+.mostrar {
+  visibility: visible;
+}
+*/

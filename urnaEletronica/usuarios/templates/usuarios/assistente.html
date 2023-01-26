@@ -2,6 +2,13 @@
 
 {% block title %}Urna Eletrônica - Assistente de Sala{% endblock title %}
 
+{% block head %}
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/assistente.css' %}">
+
+{% endblock head %}
+
 {% block content %}
 
 <div class='row'>
@@ -10,9 +17,15 @@
         <h3>Urna Eletrônica - Assistente de Sala</h3>
         <hr>
 
-        <p>
-            <a href="{% url 'selecionar-eleitor' %}"><button>Selecionar Eleitor</button></a>
-        </p>
+        {% if erro %}
+            <p class="msg-erro-1">
+                {{ msg_erro }}
+            </p>
+        {% else %}
+            <p>
+                <a href="{% url 'selecionar-eleitor' %}"><button>Selecionar Eleitor</button></a>
+            </p>
+        {% endif %}
 
         <p>
             <a href="{% url 'logout' %}"><button>Logout</button></a>

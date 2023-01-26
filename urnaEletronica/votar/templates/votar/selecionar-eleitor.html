@@ -2,14 +2,12 @@
 
 {% block title %}Urna Eletrônica - Selecionar Eleitor{% endblock title %}
 
-{% comment %} 
 {% block head %}
 
     {% load static %}
-    <!-- script type="text/javascript" src="{% static 'js/selecionar-eleitor.js' %}"></script -->
+    <link rel="stylesheet" href="{% static 'css/selecionar-eleitor.css' %}">
 
 {% endblock head %}
-{% endcomment %}
 
 {% block content %}
 
@@ -19,7 +17,7 @@
         <h3>Urna Eletrônica - Selecionar Eleitor</h3>
         <hr>
 
-        <form action="{% url 'votar-na-urna' %}" method="GET">
+        <form action="{% url 'selecionar-eleitor' %}" method="POST">
             {% csrf_token %}
             
             <p>
@@ -29,6 +27,13 @@
             </p>
 
             <p>
+                {% if erro %}
+                    <span class="erro"><br/>
+                        ERRO: o eleitor escolhido:<br/>
+                        {{ eleitor }}<br/>
+                        já votou! Escolha outro eleitor!<br/>
+                    </span>
+                {% endif %}
                 <label for="titulo_eleitor">Escolha um eleitor:</label><br/>
                 <select name="titulo_eleitor" id="titulo_eleitor">
                     {% for eleitor in eleitores %}

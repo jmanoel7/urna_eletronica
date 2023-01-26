@@ -1,36 +1,58 @@
 from django.shortcuts import render, HttpResponse
 from urna.models import Urna, Politico, Eleitor, Voto
 
+
 def eleitor(request):
     if request.method == 'GET':
         urna = Urna.objects.get(zona='0135', secao='0080', municipio='Goiânia', uf='GO')
         urna_id = urna.id
         eleitores = urna.eleitores.all()
         return render(request, 'votar/selecionar-eleitor.html',
-            { 'eleitores': eleitores, 'urna': urna, 'urna_id': urna_id }
+            { 'eleitores': eleitores, 'eleitor': None, 'urna': urna, 'urna_id': urna_id, 'erro': False }
         )
-
-def votar(request):
-    if request.method == 'GET':
-        voto = request.GET.get('voto')
-        if voto:
-            titulo_eleitor = request.GET.get('titulo_eleitor')
-            urna_id = request.GET.get('urna_id')
-            cargo = 'Presidente da República'
+    elif request.method == 'POST':
+        urna = request.POST.get('urna')
+        urna_id = request.POST.get('urna_id')
+        eleitores = urna.eleitores.all()
+        titulo_eleitor = request.POST.get('titulo_eleitor')
+        eleitor_bd = Eleitor.objects.get(titulo_eleitor=titulo_eleitor)
+        eleitor_id = eleitor_bd.id
+        cargo = 'Presidente da República'
+        voto_bd = Voto.objects.get(eleitor_id=eleitor_id, cargo=cargo)
+        if voto_bd is None:
             politicos = Politico.objects.filter(cargo=cargo)
-            # print("titulo_eleitor: %s" % titulo_eleitor)
             return render(request, 'votar/urna.html',
                 {
                     'titulo_eleitor': titulo_eleitor,
                     'urna_id': urna_id,
                     'cargo': cargo,
                     'politicos': politicos,
-                    'erro': False
+                    'erro': False,
+                    'msg_erro': 0,
                 }
             )
-        abstencao = request.GET.get('abstencao')
-        if abstencao:
-            return HttpResponse('<h1>%s</h1>' % abstencao)
+        else:
+            return render(request, 'votar/selecionar-eleitor.html',
+                { 'eleitores': eleitores, 'eleitor': eleitor_bd, 'urna': urna, 'urna_id': urna_id, 'erro': True }
+            )
+            
+
+def votar(request):
+    if request.method == 'GET':
+        titulo_eleitor = request.GET.get('titulo_eleitor')
+        urna_id = request.GET.get('urna_id')
+        cargo = 'Presidente da República'
+        politicos = Politico.objects.filter(cargo=cargo)
+        return render(request, 'votar/urna.html',
+            {
+                'titulo_eleitor': titulo_eleitor,
+                'urna_id': urna_id,
+                'cargo': cargo,
+                'politicos': politicos,
+                'erro': False,
+                'msg_erro': 0,
+            }
+        )
     elif request.method == 'POST':
         titulo_eleitor = request.POST.get('titulo_eleitor')
         urna_id = request.POST.get('urna_id')
@@ -50,6 +72,7 @@ def votar(request):
                     'partido': partido,
                     'num_partido': num_partido,
                     'erro': True,
+                    'msg_erro': 1,
                 }
             )
         elif len(politico) == 0 or len(partido) == 0:
@@ -63,10 +86,11 @@ def votar(request):
                     'partido': partido,
                     'num_partido': num_partido,
                     'erro': True,
+                    'msg_erro': 2,
                 }
             )
-        elif (politico == 'Branco' and partido != 'BRANCO') or \
-            (politico != 'Branco' and partido == 'BRANCO'):
+        elif ( politico == 'Branco' and partido != 'BRANCO' ) or \
+             ( politico != 'Branco' and partido == 'BRANCO' ):
             return render(request, 'votar/urna.html',
                 {
                     'titulo_eleitor': titulo_eleitor,
@@ -77,10 +101,11 @@ def votar(request):
                     'partido': partido,
                     'num_partido': num_partido,
                     'erro': True,
+                    'msg_erro': 3,
                 }
             )
-        elif (politico == 'Nulo' and partido != 'NULO') or \
-            (politico != 'Nulo' and partido == 'NULO'):
+        elif ( politico == 'Nulo' and partido != 'NULO' ) or \
+             ( politico != 'Nulo' and partido == 'NULO' ):
             return render(request, 'votar/urna.html',
                 {
                     'titulo_eleitor': titulo_eleitor,
@@ -91,55 +116,30 @@ def votar(request):
                     'partido': partido,
                     'num_partido': num_partido,
                     'erro': True,
+                    'msg_erro': 4,
                 }
             )
-        elif politico == 'Branco' and partido == 'BRANCO':
+        elif ( politico == 'Branco' and partido == 'BRANCO' ) or \
+             ( politico == 'Nulo' and partido == 'NULO' ) or \
+             ( ( politico != 'Branco' and partido != 'BRANCO' ) and \
+               ( politico != 'Nulo' and partido != 'NULO' ) ):
             politico_bd = Politico.objects.get(
                 politico=politico,
                 partido=partido,
                 num_partido=num_partido,
                 cargo=cargo,
-                urna_id = urna_id,
+                urna_id=urna_id,
             )
-            politico_bd.save()
-            return render(request, 'votar/registrar-voto.html',
-                {
-                    'num_partido_1': politico_bd.num_partido[0],
-                    'num_partido_2': politico_bd.num_partido[1],
-                    'politico': politico_bd.politico,
-                    'partido': politico_bd.partido,
-                    'cargo': politico_bd.cargo,
-                    'foto': politico_bd.foto,
-                }
+            politico_id = politico_bd.id
+            eleitor_bd = Eleitor.objects.get(titulo_eleitor=titulo_eleitor)
+            eleitor_id = eleitor_bd.id
+            voto = Voto.objects.create(
+                eleitor_id=eleitor_id,
+                politico_id=politico_id,
+                urna_id=urna_id,
+                cargo=cargo,
             )
-        elif politico == 'Nulo' and partido == 'NULO':
-            nulo_bd = Voto.objects.create(
-                politico=politico, foto=foto, cargo=cargo,
-                partido=partido, num_partido=num_partido, branco=False,
-                nulo=True, abstencao=False, te_eleitor=titulo_eleitor,
-                urna=urna,
-            )
-            nulo_bd.save()
-            return render(request, 'votar/registrar-voto.html',
-                {
-                    'num_partido_1': nulo_bd.num_partido[0],
-                    'num_partido_2': nulo_bd.num_partido[1],
-                    'politico': nulo_bd.politico,
-                    'partido': nulo_bd.partido,
-                    'cargo': nulo_bd.cargo,
-                    'foto': nulo_bd.foto,
-                }
-            )
-        elif (politico != 'Branco' and partido != 'BRANCO') and \
-            (politico != 'Nulo' and partido != 'NULO'):
-            print('urna: %s' % urna)
-            politico_bd = Voto.objects.create(
-                politico=politico, foto=foto, cargo=cargo,
-                partido=partido, num_partido=num_partido, branco=False,
-                nulo=False, abstencao=False, te_eleitor=titulo_eleitor,
-                urna=urna,
-            )
-            politico_bd.save()
+            voto.save()
             return render(request, 'votar/registrar-voto.html',
                 {
                     'num_partido_1': politico_bd.num_partido[0],
@@ -154,44 +154,28 @@ def votar(request):
             return render(request, 'votar/urna.html',
                 {
                     'titulo_eleitor': titulo_eleitor,
-                    'urna': urna,
                     'urna_id': urna_id,
-                    'votos': votos,
                     'cargo': cargo,
-                    'erro': True,
+                    'politicos': politicos,
                     'politico': politico,
                     'partido': partido,
                     'num_partido': num_partido,
-                    'foto': foto,
+                    'erro': True,
+                    'msg_erro': 5,
                 }
             )
     else:
         return render(request, 'votar/urna.html',
-                {
-                    'titulo_eleitor': titulo_eleitor,
-                    'urna': urna,
-                    'urna_id': urna_id,
-                    'votos': votos,
-                    'cargo': cargo,
-                    'erro': True,
-                    'politico': politico,
-                    'partido': partido,
-                    'num_partido': num_partido,
-                    'foto': foto,
-                }
-            )        
+            {
+                'titulo_eleitor': titulo_eleitor,
+                'urna_id': urna_id,
+                'cargo': cargo,
+                'politicos': politicos,
+                'politico': politico,
+                'partido': partido,
+                'num_partido': num_partido,
+                'erro': True,
+                'msg_erro': 6,
+            }
+        )
 
-#return HttpResponse('<h1>Político: %s</h1><br><h2>Partido: %s</h2>' % (politico_bd, partido))
-# return HttpResponse('<h1>Político: %s</h1>' % politico_bd)
-# 'titulo_eleitor': titulo_eleitor,
-# 'urna': urna,
-# 'votos': votos,
-# 'cargo': cargo,
-# 'erro': True,
-# 'politico': politico,
-# 'partido': partido,
-# 'num_partido': num_partido,
-# 'foto': foto,
-# def registrar(request):
-# pass
-# return HttpResponse('<h1>%s</h1>' % politico)

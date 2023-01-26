@@ -1,0 +1,12 @@
+span.erro {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 168px;
+  border: 2px solid rgb(150, 47, 47);
+  font-size: 16px;
+  /* font-weight: bold; */
+  font-family: Arial, sans-serif;
+  color: rgb(150, 47, 47);
+}

@@ -1,5 +1,6 @@
 from django.db import models
-from django.db.models import UniqueConstraint
+from django.db.models.constraints import CheckConstraint, UniqueConstraint
+from django.db.models import Q, F
 
 
 class Urna(models.Model):
@@ -7,15 +8,19 @@ class Urna(models.Model):
     secao = models.CharField(max_length=4)
     municipio = models.CharField(max_length=100)
     uf = models.CharField(max_length=2)
-    ligada = models.BooleanField(default=None, blank=True, null=True)
-    hora_inicio = models.DateTimeField(default=None, blank=True, null=True)
-    hora_fim = models.DateTimeField(default=None, blank=True, null=True)
+    data_votacao = models.DateField(default=None, blank=True, null=True)
+    hora_inicio = models.TimeField(default=None, blank=True, null=True)
+    hora_fim = models.TimeField(default=None, blank=True, null=True)
 
     class Meta:
         constraints = [
             UniqueConstraint(
                 fields=['zona', 'secao', 'municipio', 'uf'],
                 name='urna_unica',
+            ),
+            CheckConstraint(
+                check=Q(hora_fim__gt=F('hora_inicio')),
+                name='hora_fim_maior',
             ),
         ]
 
@@ -41,21 +46,6 @@ class Eleitor(models.Model):
 
     class Meta:
         verbose_name_plural = "Eleitores"
-        constraints = [
-            UniqueConstraint(
-                fields=[
-                    'nome',
-                    'data_nascimento',
-                    'titulo_eleitor',
-                    'zona',
-                    'secao',
-                    'municipio',
-                    'uf',
-                    'data_emissao',
-                ],
-                name='eleitor_unico',
-            ),
-        ]
 
 
 class Politico(models.Model):
@@ -69,8 +59,8 @@ class Politico(models.Model):
     class Meta:
         constraints = [
             UniqueConstraint(
-                fields=['politico', 'partido', 'num_partido', 'cargo'],
-                name='politico_unico',
+                fields=['partido', 'num_partido', 'cargo'],
+                name='cargo_unico',
             ),
         ]
 
@@ -82,13 +72,13 @@ class Politico(models.Model):
 class Voto(models.Model):
     eleitor = models.ForeignKey(Eleitor, on_delete=models.PROTECT, related_name='eleitores')
     politico = models.ForeignKey(Politico, on_delete=models.PROTECT, related_name='politicos')
-    cargo = models.CharField(max_length=50)
     urna = models.ForeignKey(Urna, on_delete=models.PROTECT, related_name='urnas')
+    cargo = models.CharField(max_length=50)
 
     class Meta:
         constraints = [
             UniqueConstraint(
-                fields=['eleitor', 'politico', 'cargo'],
+                fields=['eleitor', 'cargo'],
                 name='voto_unico',
             ),
         ]

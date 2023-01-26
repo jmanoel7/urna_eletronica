@@ -161,6 +161,9 @@ body {
 }
 
 .msg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   height: 65px;
   font-size: 14px;
   font-family: Arial, sans-serif;

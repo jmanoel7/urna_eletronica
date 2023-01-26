@@ -56,9 +56,37 @@
             <div id="erro" class="msg color esconder">
             
             {% endif %}
-                Erro! Voto inválido: <br />
-                Escolha um candidato, ou vote NULO / BRANCO <br />
+
+            {% if erro and msg_erro == 1 %}
+                ERRO: Escolha 1 político e 1 partido! <br/>
                 Tecle CORRIGE para REINICIAR este voto
+            {% endif %}
+            
+            {% if erro and msg_erro == 2 %}
+                ERRO: Escolha 1 político e 1 partido! <br/>
+                Tecle CORRIGE para REINICIAR este voto
+            {% endif %}
+
+            {% if erro and msg_erro == 3 %}
+                ERRO: voto em BRANCO inválido! <br/>
+                Tecle CORRIGE para REINICIAR este voto
+            {% endif %}
+
+            {% if erro and msg_erro == 4 %}
+                ERRO: voto NULO inválido! <br/>
+                Tecle CORRIGE para REINICIAR este voto
+            {% endif %}
+
+            {% if erro and msg_erro == 5 %}
+                ERRO: voto desconhecido e inválido! <br/>
+                Tecle CORRIGE para REINICIAR este voto
+            {% endif %}
+
+            {% if erro and msg_erro == 6 %}
+                ERRO: método diferente de GET e de POST! <br/>
+                Tecle CORRIGE para REINICIAR este voto
+            {% endif %}
+
             </div>
         </div>
 
