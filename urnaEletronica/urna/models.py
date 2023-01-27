@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models.constraints import CheckConstraint, UniqueConstraint
 from django.db.models import Q, F
+from datetime import datetime, time
 
 
 class Urna(models.Model):
@@ -21,6 +22,18 @@ class Urna(models.Model):
             CheckConstraint(
                 check=Q(hora_fim__gt=F('hora_inicio')),
                 name='hora_fim_maior',
+            ),
+            CheckConstraint(
+                check=Q(hora_fim__lte=time(23, 00, 00)),
+                name='hora_fim_limite',
+            ),
+            CheckConstraint(
+                check=Q(hora_inicio__lte=time(22, 55, 00)),
+                name='hora_inicio_limite',
+            ),
+            CheckConstraint(
+                check=Q(data_votacao=datetime.now().date()),
+                name='data-de-hoje',
             ),
         ]
 
