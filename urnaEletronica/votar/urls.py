@@ -6,5 +6,6 @@ from . import views
 urlpatterns = [
     path('eleitor/', views.eleitor, name='selecionar-eleitor'),
     path('votar/', views.votar, name='votar-na-urna'),
-    # path('registrar/', views.registrar, name='registrar-voto')
+    path('iniciar/', views.iniciar_votacao, name='iniciar-votacao'),
+    path('terminar/', views.terminar_votacao, name='terminar-votacao'),
 ]  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

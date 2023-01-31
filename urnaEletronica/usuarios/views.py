@@ -6,13 +6,15 @@ from urna.models import Urna
 def usuarios(request):
     if not request.user.is_authenticated:
         return redirect('%s?next=%s' % (settings.LOGIN_URL, request.path))
-    usuario = request.user.get_username()
-    return redirect('/%s' % usuario)
+    else:
+        usuario = request.user.get_username()
+        return redirect('/%s' % usuario)
 
 def gerente(request):
     if not request.user.is_authenticated:
         return redirect('%s?next=%s' % (settings.LOGIN_URL, request.path))
-    return render(request, 'usuarios/gerente.html')
+    else:
+        return render(request, 'usuarios/gerente.html')
     '''
     urna = Urna.objects.get(zona='0035', secao='0080', municipio='Goiânia', uf='GO')
     erro_inicio = False
@@ -83,6 +85,4 @@ def assistente(request):
             msg_erro = 'ERRO: o horário de votação ainda não iniciou !!!'
         if urna.hora_fim < datetime.now().time():
             msg_erro = 'ERRO: o horário de votação já se encerrou !!!'
-    else:
-        return render(request, 'usuarios/assistente.html', {'erro': False, 'msg_erro': ''})
     return render(request, 'usuarios/assistente.html', {'erro': erro, 'msg_erro': msg_erro})

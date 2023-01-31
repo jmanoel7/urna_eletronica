@@ -79,8 +79,8 @@ $(document).ready(function(){
     $('#partido').text('{{ partido }}');
     $('#foto').attr('src', '{{ MEDIA_URL }}{{ foto }}');
     setTimeout(function(){
-      window.location.href = "{% url 'assistente' %}";
-    },5000);
+      window.location.href = "{% url 'index' %}";
+    },10000);
 });
 </script>
 {% endblock content %}

@@ -19,16 +19,20 @@ class Urna(models.Model):
                 fields=['zona', 'secao', 'municipio', 'uf'],
                 name='urna_unica',
             ),
+            UniqueConstraint(
+                fields=['data_votacao', 'hora_inicio', 'hora_fim'],
+                name='data_unica',
+            ),
             CheckConstraint(
                 check=Q(hora_fim__gt=F('hora_inicio')),
                 name='hora_fim_maior',
             ),
             CheckConstraint(
-                check=Q(hora_fim__lte=time(23, 00, 00)),
+                check=Q(hora_fim__lte=time(23, 55, 00)),
                 name='hora_fim_limite',
             ),
             CheckConstraint(
-                check=Q(hora_inicio__lte=time(22, 55, 00)),
+                check=Q(hora_inicio__lte=time(23, 50, 00)),
                 name='hora_inicio_limite',
             ),
             CheckConstraint(
@@ -65,7 +69,7 @@ class Politico(models.Model):
     politico = models.CharField(max_length=100, unique=True)
     foto = models.ImageField(unique=True)
     partido = models.CharField(max_length=10)
-    num_partido = models.CharField(max_length=2)
+    num_partido = models.CharField(max_length=2, blank=True)
     cargo = models.CharField(max_length=50)
     urna = models.ForeignKey(Urna, on_delete=models.PROTECT, related_name='politicos')
 
@@ -95,3 +99,24 @@ class Voto(models.Model):
                 name='voto_unico',
             ),
         ]
+
+
+class Resultado(models.Model):
+    votos_invalidos = models.IntegerField()
+    votos_validos = models.IntegerField()
+    total_votos = models.IntegerField()
+    votos_candidato_A = models.IntegerField()
+    votos_candidato_B = models.IntegerField()
+
+    class Meta:
+        constraints = [
+            CheckConstraint(
+                check=Q(total_votos=F('votos_validos')+F('votos_invalidos')),
+                name='total_votos',
+            ),
+            CheckConstraint(
+                check=Q(votos_validos=F('votos_candidato_A')+F('votos_candidato_B')),
+                name='votos_validos',
+            ),
+        ]
+
