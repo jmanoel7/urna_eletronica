@@ -79,6 +79,10 @@ class Politico(models.Model):
                 fields=['partido', 'num_partido', 'cargo'],
                 name='cargo_unico',
             ),
+            UniqueConstraint(
+                fields=['politico', 'partido', 'num_partido', 'cargo'],
+                name='politico_unico',
+            ),
         ]
 
     def __str__(self):
@@ -87,9 +91,9 @@ class Politico(models.Model):
 
 
 class Voto(models.Model):
-    eleitor = models.ForeignKey(Eleitor, on_delete=models.PROTECT, related_name='eleitores')
-    politico = models.ForeignKey(Politico, on_delete=models.PROTECT, related_name='politicos')
-    urna = models.ForeignKey(Urna, on_delete=models.PROTECT, related_name='urnas')
+    eleitor = models.ForeignKey(Eleitor, on_delete=models.PROTECT, related_name='votos')
+    politico = models.ForeignKey(Politico, on_delete=models.PROTECT, related_name='votos')
+    urna = models.ForeignKey(Urna, on_delete=models.PROTECT, related_name='votos')
     cargo = models.CharField(max_length=50)
 
     class Meta:
@@ -102,21 +106,28 @@ class Voto(models.Model):
 
 
 class Resultado(models.Model):
+    ausentes = models.IntegerField()
+    votos_nulo = models.IntegerField()
+    votos_branco = models.IntegerField()
     votos_invalidos = models.IntegerField()
-    votos_validos = models.IntegerField()
-    total_votos = models.IntegerField()
     votos_candidato_A = models.IntegerField()
     votos_candidato_B = models.IntegerField()
+    votos_validos = models.IntegerField()
+    total_votos = models.IntegerField()
 
     class Meta:
         constraints = [
             CheckConstraint(
-                check=Q(total_votos=F('votos_validos')+F('votos_invalidos')),
-                name='total_votos',
+                check=Q(votos_invalidos=F('votos_branco')+F('votos_nulo')),
+                name='total_invalidos',
             ),
             CheckConstraint(
                 check=Q(votos_validos=F('votos_candidato_A')+F('votos_candidato_B')),
-                name='votos_validos',
+                name='total_validos',
+            ),
+            CheckConstraint(
+                check=Q(total_votos=F('votos_validos')+F('votos_invalidos')),
+                name='total_votos',
             ),
         ]
 
