@@ -14,13 +14,14 @@
 <div class='row'>
     <div class='col-md-4 mx-auto'>
 
-        <h3>Urna Eletrônica - Assistente de Sala</h3>
+        <p><h3>Urna Eletrônica - Assistente de Sala</h3></p>
         <hr>
 
         {% if erro %}
-            <p class="msg-erro-1">
+            <p class="msg-erro">
                 {{ msg_erro }}
             </p>
+            <hr>
         {% else %}
             <p>
                 <a href="{% url 'selecionar-eleitor' %}"><button>Selecionar Eleitor</button></a>

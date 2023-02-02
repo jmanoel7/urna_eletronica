@@ -170,10 +170,10 @@ body {
 }
 
 .color {
-  color: rgb(150, 47, 47);
+  color: tomato;
   margin-left: 12.5px;
   padding-left: 12.5px;
-  border-left: 2px solid rgb(150, 47, 47);
+  border-left: 2px solid tomato;
 }
 
 .esconder {

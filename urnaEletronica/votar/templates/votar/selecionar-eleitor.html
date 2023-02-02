@@ -14,7 +14,7 @@
 <div class='row'>
     <div class='col-md-4 mx-auto'>
 
-        <h3>Urna Eletrônica - Selecionar Eleitor</h3>
+        <p><h3>Urna Eletrônica - Selecionar Eleitor</h3></p>
         <hr>
 
         <form action="{% url 'selecionar-eleitor' %}" method="POST">{% csrf_token %}
@@ -28,11 +28,13 @@
             <p>
                 {% if erro %}
 
-                    <span class="msg-erro-1"><br/>
+                    <hr>
+                    <span class="msg-erro"><br/>
                         ERRO: o eleitor escolhido:<br/>
                         {{ eleitor }}<br/>
                         já votou! Escolha outro eleitor!<br/>
                     </span>
+                    <hr>
 
                 {% endif %}
 

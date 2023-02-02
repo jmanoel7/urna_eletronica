@@ -1,5 +1,5 @@
-.msg-sucesso-1 {
-    text-align: center;
+.msg-sucesso {
+    text-align: left;
     vertical-align: middle;
     font-size: 16px;
     font-weight: bold;
@@ -7,11 +7,8 @@
     color: darkcyan;
 }
 
-/* .msg-erro-1 {
+h3 {
     text-align: center;
     vertical-align: middle;
-    font-size: 16px;
-    font-weight: bold;
-    font-family: Arial, Helvetica, sans-serif;
-    color: tomato;
-} */
+    color: darkblue;
+}

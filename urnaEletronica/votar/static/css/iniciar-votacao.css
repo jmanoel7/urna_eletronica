@@ -1,5 +1,5 @@
 .urna {
-    text-align: center;
+    text-align: left;
     vertical-align: middle;
     width: 100%;
     line-height: 1.5;
@@ -10,7 +10,7 @@
 }
 
 .msg-erro {
-    text-align: center;
+    text-align: left;
     vertical-align: middle;
     width: 100%;
     line-height: 1.5;
@@ -18,4 +18,10 @@
     font-weight: 400;
     font-family: Arial, Helvetica, sans-serif;
     color: tomato;
+}
+
+h3 {
+    text-align: center;
+    vertical-align: middle;
+    color: darkblue;
 }
