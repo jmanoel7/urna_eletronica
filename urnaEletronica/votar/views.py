@@ -1,5 +1,6 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render
-from urna.models import Urna, Politico, Eleitor, Voto, Resultado
+from urna.models import Urna, Politico, Eleitor, Voto, Resultado, dataVotacao
 from .forms import formIniciarVotacao
 from datetime import datetime, time, timedelta
 
@@ -51,10 +52,13 @@ def iniciar_votacao(request):
                     }
                 )
             else:
-                urna.data_votacao = data_votacao
-                urna.hora_inicio = hora_inicio
-                urna.hora_fim = hora_fim
-                urna.save()
+                data_obj = dataVotacao.objects.create(
+                    data_votacao = data_votacao,
+                    hora_inicio = hora_inicio,
+                    hora_fim = hora_fim,
+                    urna_id = urna_id,
+                )
+                data_obj.save()
                 return render(request, 'votar/iniciar-votacao-sucesso.html')
         else:
             urna = Urna.objects.get(zona='0035', secao='0080', municipio='Goiânia', uf='GO')
@@ -71,47 +75,56 @@ def iniciar_votacao(request):
 
 def terminar_votacao(request):
     urna = Urna.objects.get(zona='0035', secao='0080', municipio='Goiânia', uf='GO')
-    if (urna.data_votacao == datetime.now().date()) and (urna.hora_fim >= datetime.now().time()):
-        cargo = 'Presidente da República'
-        politico_branco = Politico.objects.get(
-            politico='Branco', partido='BRANCO', num_partido='  ', cargo=cargo
-        )
-        politico_nulo = Politico.objects.get(
-            politico='Nulo', partido='NULO', num_partido='00', cargo=cargo
-        )
-        politico_pt = Politico.objects.get(
-            politico='Lula', partido='PT', num_partido='13', cargo=cargo
-        )
-        politico_pl = Politico.objects.get(
-            politico='Bolsonaro', partido='PL', num_partido='22', cargo=cargo
-        )
-        votos_branco = politico_branco.votos.all()
-        votos_nulo = politico_nulo.votos.all()
-        votos_pt = politico_pt.votos.all()
-        votos_pl = politico_pl.votos.all()
-        votos_invalidos = votos_branco + votos_nulo
-        votos_validos = votos_pt + votos_pl
-        total_votos = urna.votos.all()
-        total_eleitores = urna.eleitores.all()
-        ausentes = total_eleitores - total_votos
-        # voto_branco = Voto.objects.filter(politico_id=politico_branco.id)
-        # voto_nulo = Voto.objects.filter(politico_id=politico_nulo.id)
-        # voto_pt = Voto.objects.filter(politico_id=politico_pt.id)
-        # voto_pl = Voto.objects.filter(politico_id=politico_pl.id)
-        resultado = Resultado.objects.create(
-            ausentes = ausentes,
-            votos_nulo = votos_nulo,
-            votos_branco = votos_branco,
-            votos_invalidos = votos_invalidos,
-            votos_candidato_A = votos_pl,
-            votos_candidato_B = votos_pt,
-            votos_validos = votos_validos,
-            total_votos = total_votos,
-        )
-        resultado.save()
-        return render(request, 'votar/terminar-votacao.html', {'erro': False, 'resultado': resultado})
+    try:
+        data_obj = dataVotacao.objects.get(data_votacao=datetime.now().date())
+    except ObjectDoesNotExist:
+        data_obj= None
+    if (data_obj is not None):
+        if (data_obj.hora_fim >= datetime.now().time()):
+            cargo = 'Presidente da República'
+            politico_branco = Politico.objects.get(
+                politico='Branco', partido='BRANCO', num_partido='  ', cargo=cargo
+            )
+            politico_nulo = Politico.objects.get(
+                politico='Nulo', partido='NULO', num_partido='00', cargo=cargo
+            )
+            politico_pt = Politico.objects.get(
+                politico='Lula', partido='PT', num_partido='13', cargo=cargo
+            )
+            politico_pl = Politico.objects.get(
+                politico='Bolsonaro', partido='PL', num_partido='22', cargo=cargo
+            )
+            votos_branco = politico_branco.votos.all()
+            votos_nulo = politico_nulo.votos.all()
+            votos_pt = politico_pt.votos.all()
+            votos_pl = politico_pl.votos.all()
+            votos_invalidos = votos_branco + votos_nulo
+            votos_validos = votos_pt + votos_pl
+            total_votos = urna.votos.all()
+            total_eleitores = urna.eleitores.all()
+            ausentes = total_eleitores - total_votos
+            # voto_branco = Voto.objects.filter(politico_id=politico_branco.id)
+            # voto_nulo = Voto.objects.filter(politico_id=politico_nulo.id)
+            # voto_pt = Voto.objects.filter(politico_id=politico_pt.id)
+            # voto_pl = Voto.objects.filter(politico_id=politico_pl.id)
+            resultado = Resultado.objects.create(
+                ausentes = ausentes,
+                votos_nulo = votos_nulo,
+                votos_branco = votos_branco,
+                votos_invalidos = votos_invalidos,
+                votos_candidato_A = votos_pl,
+                votos_candidato_B = votos_pt,
+                votos_validos = votos_validos,
+                total_votos = total_votos,
+            )
+            resultado.save()
+            return render(request, 'votar/terminar-votacao.html', {
+                'erro': False, 'resultado': resultado
+            })
     else:
-        return render(request, 'votar/terminar-votacao.html', {'erro': True, 'resultado': None})
+        return render(request, 'votar/terminar-votacao.html', {
+            'erro': True, 'resultado': None
+        })
 
 
 def eleitor(request):

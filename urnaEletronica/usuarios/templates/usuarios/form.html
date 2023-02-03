@@ -2,6 +2,13 @@
 
 {% block title %}Urna Eletrônica - Login{% endblock title %}
 
+{% block head %}
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+
+{% endblock head %}
+
 {% block content %}
 
 {% load crispy_forms_tags %}
@@ -9,7 +16,7 @@
 <div class='row'>
     <div class='col-md-4 mx-auto'>
 
-        <h3>Urna Eletrônica - Login</h3>
+        <p><h3>Urna Eletrônica - Login</h3></p>
         <hr>
 
         <form method="POST">

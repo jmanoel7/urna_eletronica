@@ -9,20 +9,21 @@ class Urna(models.Model):
     secao = models.CharField(max_length=4)
     municipio = models.CharField(max_length=100)
     uf = models.CharField(max_length=2)
-    data_votacao = models.DateField(default=None, blank=True, null=True)
-    hora_inicio = models.TimeField(default=None, blank=True, null=True)
-    hora_fim = models.TimeField(default=None, blank=True, null=True)
+
+    def __str__(self):
+        return 'Zona: %s, Seção: %s, Município: %s, UF: %s' % (
+            self.zona, self.secao, self.municipio, self.uf,
+        )
+
+
+class dataVotacao(models.Model):
+    data_votacao = models.DateField(unique=True)
+    hora_inicio = models.TimeField()
+    hora_fim = models.TimeField()
+    urna = models.ForeignKey(Urna, on_delete=models.PROTECT, related_name='datas')
 
     class Meta:
         constraints = [
-            UniqueConstraint(
-                fields=['zona', 'secao', 'municipio', 'uf'],
-                name='urna_unica',
-            ),
-            UniqueConstraint(
-                fields=['data_votacao', 'hora_inicio', 'hora_fim'],
-                name='data_unica',
-            ),
             CheckConstraint(
                 check=Q(hora_fim__gt=F('hora_inicio')),
                 name='hora_fim_maior',
@@ -41,10 +42,12 @@ class Urna(models.Model):
             ),
         ]
 
-    def __str__(self):
-        return 'Zona: %s, Seção: %s, Município: %s, UF: %s' % (
-            self.zona, self.secao, self.municipio, self.uf,
-        )
+        def __str__(self):
+            return "Data: %s, Início:%s, Fim:%s" % (
+                self.data_votacao.__str__(),
+                self.hora_inicio.__str__(),
+                self.hora_fim.__str__()
+            )
 
 
 class Eleitor(models.Model):

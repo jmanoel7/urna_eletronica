@@ -17,16 +17,9 @@
         <p><h3>Urna Eletrônica - Assistente de Sala</h3></p>
         <hr>
 
-        {% if erro %}
-            <p class="msg-erro">
-                {{ msg_erro }}
-            </p>
-            <hr>
-        {% else %}
-            <p>
-                <a href="{% url 'selecionar-eleitor' %}"><button>Selecionar Eleitor</button></a>
-            </p>
-        {% endif %}
+        <p>
+            <a href="{% url 'selecionar-eleitor' %}"><button>Selecionar Eleitor</button></a>
+        </p>
 
         <p>
             <a href="{% url 'logout' %}"><button>Logout</button></a>

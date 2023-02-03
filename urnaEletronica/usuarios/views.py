@@ -66,17 +66,19 @@ def gerente(request):
 def assistente(request):
     if not request.user.is_authenticated:
         return redirect('%s?next=%s' % (settings.LOGIN_URL, request.path))
-    # return render(request, 'usuarios/assistente.html')
+    else:
+        return render(request, 'usuarios/assistente.html')
+    '''
     urna = Urna.objects.get(zona='0035', secao='0080', municipio='Goiânia', uf='GO')
     erro = False
-    msg_erro = ''
-    if urna.data_votacao is None:
+    msg_erro = None
+    if urna.datas.data_votacao is None:
         erro = True
         msg_erro = 'ERRO: data não programada para votação !!!'
-    elif urna.hora_inicio is None:
+    elif urna.datas.hora_inicio is None:
         erro = True
         msg_erro = 'ERRO: horário de início não programado para votação !!!'
-    elif urna.hora_fim is None:
+    elif urna.datas.hora_fim is None:
         erro = True
         msg_erro = 'ERRO: horário de fim não programado para votação !!!'
     elif not ( urna.hora_inicio <= datetime.now().time() and urna.hora_fim >= datetime.now().time() ):
@@ -86,3 +88,4 @@ def assistente(request):
         if urna.hora_fim < datetime.now().time():
             msg_erro = 'ERRO: o horário de votação já se encerrou !!!'
     return render(request, 'usuarios/assistente.html', {'erro': erro, 'msg_erro': msg_erro})
+    '''
