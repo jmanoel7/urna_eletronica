@@ -79,8 +79,8 @@ def terminar_votacao(request):
         data_obj = dataVotacao.objects.get(data_votacao=datetime.now().date())
     except ObjectDoesNotExist:
         data_obj= None
-    if (data_obj is not None):
-        if (data_obj.hora_fim >= datetime.now().time()):
+    if data_obj is not None:
+        if data_obj.hora_fim >= datetime.now().time():
             cargo = 'Presidente da República'
             politico_branco = Politico.objects.get(
                 politico='Branco', partido='BRANCO', num_partido='  ', cargo=cargo
@@ -118,32 +118,78 @@ def terminar_votacao(request):
                 total_votos = total_votos,
             )
             resultado.save()
-            return render(request, 'votar/terminar-votacao.html', {
-                'erro': False, 'resultado': resultado
-            })
+            return render(request, 'votar/terminar-votacao.html',
+                {
+                    'erro': False,
+                    'resultado': resultado,
+                }
+            )
     else:
-        return render(request, 'votar/terminar-votacao.html', {
-            'erro': True, 'resultado': None
-        })
+        return render(request, 'votar/terminar-votacao.html',
+            {
+                'erro': True,
+                'resultado': None,
+            }
+        )
 
 
 def eleitor(request):
-    if request.method == 'GET':
-        urna = Urna.objects.get(zona='0035', secao='0080', municipio='Goiânia', uf='GO')
-        urna_id = urna.id
-        eleitores = urna.eleitores.all()
+    urna = Urna.objects.get(zona='0035', secao='0080', municipio='Goiânia', uf='GO')
+    urna_id = urna.id
+    eleitores = urna.eleitores.all()
+    try:
+        data_obj = dataVotacao.objects.get(data_votacao=datetime.now().date())
+    except ObjectDoesNotExist:
+        data_obj= None
+    if data_obj is not None:
+        if ( data_obj.hora_inicio <= datetime.now().time() ) and \
+            ( data_obj.hora_fim >= datetime.now().time() ):
+            pass
+        else:
+            return render(request, 'votar/selecionar-eleitor.html',
+                {
+                    'eleitores': eleitores,
+                    'eleitor': None,
+                    'urna': urna,
+                    'urna_id': urna_id,
+                    'erro': True,
+                    'msg-erro': 1,
+                }
+            )
+    else:
         return render(request, 'votar/selecionar-eleitor.html',
-            { 'eleitores': eleitores, 'eleitor': None, 'urna': urna, 'urna_id': urna_id, 'erro': False }
+            {
+                'eleitores': eleitores,
+                'eleitor': None,
+                'urna': urna,
+                'urna_id': urna_id,
+                'erro': True,
+                'msg-erro': 2,
+            }
+        )
+    if request.method == 'GET':
+        return render(request, 'votar/selecionar-eleitor.html',
+            {
+                'eleitores': eleitores,
+                'eleitor': None,
+                'urna': urna,
+                'urna_id': urna_id,
+                'erro': False,
+                'msg-erro': 0,
+            }
         )
     elif request.method == 'POST':
-        urna = request.POST.get('urna')
         urna_id = request.POST.get('urna_id')
+        urna = Urna.objects.get(id=urna_id)
         eleitores = urna.eleitores.all()
         titulo_eleitor = request.POST.get('titulo_eleitor')
         eleitor_bd = Eleitor.objects.get(titulo_eleitor=titulo_eleitor)
         eleitor_id = eleitor_bd.id
         cargo = 'Presidente da República'
-        voto_bd = Voto.objects.get(eleitor_id=eleitor_id, cargo=cargo)
+        try:
+            voto_bd = Voto.objects.get(eleitor_id=eleitor_id, cargo=cargo)
+        except ObjectDoesNotExist:
+            voto_bd = None
         if voto_bd is None:
             politicos = Politico.objects.filter(cargo=cargo)
             return render(request, 'votar/urna.html',
@@ -158,7 +204,14 @@ def eleitor(request):
             )
         else:
             return render(request, 'votar/selecionar-eleitor.html',
-                { 'eleitores': eleitores, 'eleitor': eleitor_bd, 'urna': urna, 'urna_id': urna_id, 'erro': True }
+                {
+                    'eleitores': eleitores,
+                    'eleitor': eleitor_bd,
+                    'urna': urna,
+                    'urna_id': urna_id,
+                    'erro': True,
+                    'msg-erro': 3,
+                }
             )
             
 
