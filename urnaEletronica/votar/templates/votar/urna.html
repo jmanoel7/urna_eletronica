@@ -399,7 +399,7 @@ $(document).ready(function(){
         if (num_partido.length == 2) {
             $('#politico').attr( 'value', 'Nulo' );
             $('#partido').attr( 'value', 'NULO' );
-            $('#num_partido').attr( 'value', num_partido );
+            $('#num_partido').attr( 'value', '00' );
             $('span.politico').text( 'Nulo' );
             $('span.partido').text( 'NULO' );
             $('img.foto').attr('src', '{{ MEDIA_URL }}nulo.png');

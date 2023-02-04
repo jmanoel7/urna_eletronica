@@ -30,9 +30,31 @@
 
                     <hr>
                     <span class="msg-erro"><br/>
+
+                    {% if msg_erro == 1 %}
+                        ERRO: a urna ainda não está<br/>
+                        aberta para receber votos,<br/>
+                        espere pelo início da votação!<br/>
+                    {% endif %}
+                    
+                    {% if msg_erro == 2 %}
+                        ERRO: a urna já não está<br/>
+                        recebendo mais votos,<br/>
+                        a votação está encerrada!<br/>
+                    {% endif %}
+
+                    {% if msg_erro == 3 %}
+                        ERRO: a data de votação<br/>
+                        não está marcada para<br/>
+                        o dia de hoje!<br/>
+                    {% endif %}
+                    
+                    {% if msg_erro == 4 %}
                         ERRO: o eleitor escolhido:<br/>
                         {{ eleitor }}<br/>
-                        já votou! Escolha outro eleitor!<br/>
+                        já votou! Escolha outro eleitor!<br/>                
+                    {% endif %}
+
                     </span>
                     <hr>
 

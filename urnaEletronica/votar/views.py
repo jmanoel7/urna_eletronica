@@ -146,14 +146,18 @@ def eleitor(request):
             ( data_obj.hora_fim >= datetime.now().time() ):
             pass
         else:
+            if data_obj.hora_inicio > datetime.now().time():
+                msg_erro = 1
+            elif data_obj.hora_fim < datetime.now().time():
+                msg_erro = 2
             return render(request, 'votar/selecionar-eleitor.html',
                 {
                     'eleitores': eleitores,
                     'eleitor': None,
                     'urna': urna,
-                    'urna_id': urna_id,
+                    'urna_id': urna_id, 
                     'erro': True,
-                    'msg-erro': 1,
+                    'msg_erro': msg_erro,
                 }
             )
     else:
@@ -164,7 +168,7 @@ def eleitor(request):
                 'urna': urna,
                 'urna_id': urna_id,
                 'erro': True,
-                'msg-erro': 2,
+                'msg_erro': 3,
             }
         )
     if request.method == 'GET':
@@ -175,7 +179,7 @@ def eleitor(request):
                 'urna': urna,
                 'urna_id': urna_id,
                 'erro': False,
-                'msg-erro': 0,
+                'msg_erro': 0,
             }
         )
     elif request.method == 'POST':
@@ -210,7 +214,7 @@ def eleitor(request):
                     'urna': urna,
                     'urna_id': urna_id,
                     'erro': True,
-                    'msg-erro': 3,
+                    'msg_erro': 4,
                 }
             )
             
