@@ -20,9 +20,25 @@
         {% if erro %}
 
             <p class="msg-erro">
-                ERRO: não foi possível terminar a votação !!!<br/>
-                Pode ter sido pela data e/ou horário da votação,<br/>
-                favor verificar o motivo e volte aqui mais tarde.<br/>
+
+                {% if msg_erro == 1 %}
+                    ERRO: não foi possível terminar a votação !!!<br/>
+                    O dia de hoje não é dia de votação.<br/>
+                    Volte noutro dia, após a votação.<br/>
+                {% endif %}
+
+                {% if msg_erro == 2 %}
+                    ERRO: não foi possível terminar a votação !!!<br/>
+                    A votação nem se iniciou, volte<br/>
+                    após o encerramento da votação.<br/>
+                {% endif %}
+
+                {% if msg_erro == 3 %}
+                    ERRO: não foi possível terminar a votação !!!<br/>
+                    A votação está em andamento, volte<br/>
+                    após o encerramento da votação.<br/>
+                {% endif %}
+
             </p>
             <hr>
 

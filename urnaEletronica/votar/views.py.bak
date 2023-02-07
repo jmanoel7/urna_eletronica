@@ -6,15 +6,69 @@ from datetime import datetime, time, timedelta
 
 def iniciar_votacao(request):
     if request.method == 'GET':
+        urna = Urna.objects.get(zona='0035', secao='0080', municipio='Goiânia', uf='GO')
+        urna_id = urna.id
         form = formIniciarVotacao()
-        return render(request, 'votar/iniciar-votacao.html', {'form': form, 'erro': False})
+        return render(request, 'votar/iniciar-votacao.html',
+            {
+                'form': form,
+                'urna': urna,
+                'urna_id': urna_id,
+                'erro': False,
+            }
+        )
     elif request.method == 'POST':
         form = formIniciarVotacao(request.POST)
         if form.is_valid():
-            form.save()
-            return render(request, 'votar/iniciar-votacao-sucesso.html')
+            urna_id = request.POST.get('urna_id')
+            if urna_id is None:
+                urna = Urna.objects.get(zona='0035', secao='0080', municipio='Goiânia', uf='GO')
+                urna_id = urna.id
+            else:
+                urna = Urna.objects.get(id=urna_id)
+            data_votacao = request.POST.get('data_votacao')
+            hora_inicio = request.POST.get('hora_inicio')
+            hora_fim = request.POST.get('hora_fim')
+            if (data_votacao is None) or (hora_inicio is None) or (hora_fim is None):
+                return render(request, 'votar/iniciar-votacao.html',
+                    {
+                        'form': form,
+                        'urna': urna,
+                        'urna_id': urna_id,
+                        'erro': True,
+                    }
+                )
+            elif (len( data_votacao.__str__() ) == 0) or \
+                (len( hora_inicio.__str__() ) == 0) or \
+                (len( hora_fim.__str__() ) == 0):
+                return render(request, 'votar/iniciar-votacao.html',
+                    {
+                        'form': form,
+                        'urna': urna,
+                        'urna_id': urna_id,
+                        'erro': True,
+                    }
+                )
+            else:
+                data_obj = dataVotacao.objects.create(
+                    data_votacao = data_votacao,
+                    hora_inicio = hora_inicio,
+                    hora_fim = hora_fim,
+                    urna_id = urna_id,
+                )
+                data_obj.save()
+                return render(request, 'votar/iniciar-votacao-sucesso.html')
         else:
-            return render(request, 'votar/iniciar-votacao.html', {'form': form, 'erro': True})
+            urna = Urna.objects.get(zona='0035', secao='0080', municipio='Goiânia', uf='GO')
+            urna_id = urna.id
+            return render(request, 'votar/iniciar-votacao.html',
+                {
+                    'form': form,
+                    'urna': urna,
+                    'urna_id': urna_id,
+                    'erro': True,
+                }
+            )
 
 
 def terminar_votacao(request):

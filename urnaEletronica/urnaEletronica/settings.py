@@ -130,7 +130,7 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # default format for date input
-DATE_INPUT_FORMATS = [ '%d/%m/%Y', '%Y-%m-%d' ]
+DATE_INPUT_FORMATS = ( '%d/%m/%Y', '%Y-%m-%d' )
 
 # ROOT MEDIA FILES
 MEDIA_URL = '/mediafiles/'
