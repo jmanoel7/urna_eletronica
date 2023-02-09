@@ -1,7 +1,7 @@
 from django.db import models
 from django.db.models.constraints import CheckConstraint, UniqueConstraint
 from django.db.models import Q, F
-from datetime import datetime, timedelta, time
+from datetime import datetime, time
 
 
 class Urna(models.Model):
@@ -26,11 +26,11 @@ class dataVotacao(models.Model):
         constraints = [
             CheckConstraint(
                 check=Q(data_votacao__gte=datetime.now().date()),
-                name='data-de-hoje',
+                name='data_maior_ou_igual_hoje',
             ),
             CheckConstraint(
                 check=Q(hora_fim__gt=F('hora_inicio')),
-                name='hora_fim_maior',
+                name='hora_fim_maior_inicio',
             ),
             CheckConstraint(
                 check=Q(hora_fim__lte=time(23, 55, 0)),
@@ -117,6 +117,7 @@ class Resultado(models.Model):
     votos_candidato_B = models.IntegerField()
     votos_validos = models.IntegerField()
     total_votos = models.IntegerField()
+    total_eleitores = models.IntegerField()
 
     class Meta:
         constraints = [

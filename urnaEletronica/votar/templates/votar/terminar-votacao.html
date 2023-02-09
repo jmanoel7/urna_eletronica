@@ -44,7 +44,58 @@
 
         {% else %}
 
-            Em construção!!!
+            <table>
+                <tr>
+                    <th>Votação</th>
+                    <th>Total Bruto</th>
+                    <th>Porcentagem (%)</th>
+                </tr>
+                <tr>
+                    <td>Votos Nulos</td>
+                    <td>{{ resultado.votos_nulo }}</td>
+                    <td>{{ (resultado.votos_nulo / resultado.votos_invalidos) * 100 }}%</td>
+                </tr>
+                <tr>
+                    <td>Votos Brancos</td>
+                    <td>{{ resultado.votos_branco }}</td>
+                    <td>{{ (resultado.votos_branco / resultado.votos_invalidos) * 100 }}%</td>
+                </tr>
+                <tr>
+                    <td>Votos em Bolsonaro</td>
+                    <td>{{ resultado.votos_candidato_A }}</td>
+                    <td>{{ (resultado.votos_candidato_A / resultado.votos_validos) * 100 }}%</td>
+                </tr>
+                <tr>
+                    <td>Votos em Lula</td>
+                    <td>{{ resultado.votos_candidato_B }}</td>
+                    <td>{{ (resultado;votos_candidato_B / resultado.votos_validos) * 100 }}%</td>
+                </tr>
+                <tr>
+                    <td>Total de Votos Válidos</td>
+                    <td>{{ resultado.votos_validos }}</td>
+                    <td>{{ (resultado.votos_validos / resultado.total_votos) * 100 }}%</td>
+                </tr>
+                <tr>
+                    <td>Total de Votos Inválidos</td>
+                    <td>{{ resultado.votos_invalidos }}</td>
+                    <td>{{ (resultado.votos_invalidos / resultado.total_votos) * 100 }}%</td>
+                </tr>
+                <tr>
+                    <td>Total de Votos</td>
+                    <td>{{ resultado.total_votos }}</td>
+                    <td>{{ (resultado.total_votos / resultado.total_eleitores) * 100 }}%</td>
+                </tr>
+                <tr>
+                    <td>Ausência</td>
+                    <td>{{ resultado.ausentes }}</td>
+                    <td>{{ (resultado.ausentes / resultado.total_eleitores) * 100 }}%</td>
+                </tr>
+                <tr>
+                    <td>Total de Eleitores</td>
+                    <td>{{ resultado.total_eleitores }}</td>
+                    <td>100 %</td>
+                </tr>
+            </table>
 
         {% endif %}
 

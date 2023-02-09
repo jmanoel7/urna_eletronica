@@ -19,9 +19,8 @@
         <hr>
 
         <p class="msg-sucesso">
-            Votação iniciada com SUCESSO !!!<br/>
-            OBS: Você será redirecionado(a)<br/>
-            para página de início.<br/>
+            Você será redirecionado(a)<br/>
+            para página de início.
         </p>
 
     </div>
@@ -31,7 +30,7 @@
 $(document).ready(function(){
     setTimeout(function(){
       window.location.href = "{% url 'index' %}";
-    },5000);
+    },10000);
 });
 </script>
 

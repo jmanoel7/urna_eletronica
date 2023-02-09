@@ -77,6 +77,7 @@ def terminar_votacao(request):
                 votos_candidato_B = votos_pt,
                 votos_validos = votos_validos,
                 total_votos = total_votos,
+                total_eleitores = total_eleitores,
             )
             resultado.save()
             return render(request, 'votar/terminar-votacao.html',
