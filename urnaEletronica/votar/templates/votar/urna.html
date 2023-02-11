@@ -328,13 +328,13 @@ $(document).ready(function(){
     $("#btn-branco").click(function(){
         $('#erro').addClass('esconder');
         $('#erro').removeClass('mostrar');
-        $('#num1').text('');
-        $('#num2').text('');
+        $('#num1').text('0');
+        $('#num2').text('0');
         $('#num1').removeClass('pisca');
         $('#num2').removeClass('pisca');
         $('#politico').attr( 'value', 'Branco' );
         $('#partido').attr( 'value', 'BRANCO' );
-        $('#num_partido').attr( 'value', '  ' );
+        $('#num_partido').attr( 'value', '00' );
         $('span.politico').text( 'Branco' );
         $('span.partido').text( 'BRANCO' );
         $('img.foto').attr('src', '{{ MEDIA_URL }}branco.png');
@@ -397,9 +397,11 @@ $(document).ready(function(){
             {% endfor %}
         }
         if (num_partido.length == 2) {
+            $('#num1').text('9');
+            $('#num2').text('9');
             $('#politico').attr( 'value', 'Nulo' );
             $('#partido').attr( 'value', 'NULO' );
-            $('#num_partido').attr( 'value', '00' );
+            $('#num_partido').attr( 'value', '99' );
             $('span.politico').text( 'Nulo' );
             $('span.partido').text( 'NULO' );
             $('img.foto').attr('src', '{{ MEDIA_URL }}nulo.png');

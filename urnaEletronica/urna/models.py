@@ -1,7 +1,7 @@
 from django.db import models
 from django.db.models.constraints import CheckConstraint, UniqueConstraint
 from django.db.models import Q, F
-from datetime import datetime, time
+from datetime import datetime
 
 
 class Urna(models.Model):
@@ -26,19 +26,15 @@ class dataVotacao(models.Model):
         constraints = [
             CheckConstraint(
                 check=Q(data_votacao__gte=datetime.now().date()),
-                name='data_maior_ou_igual_hoje',
+                name='data_votacao_maior_ou_igual_hoje',
+            ),
+            CheckConstraint(
+                check=Q(hora_inicio__gte=datetime.now().time()),
+                name='hora_inicio_maior_ou_igual_agora',
             ),
             CheckConstraint(
                 check=Q(hora_fim__gt=F('hora_inicio')),
                 name='hora_fim_maior_inicio',
-            ),
-            CheckConstraint(
-                check=Q(hora_fim__lte=time(23, 55, 0)),
-                name='hora_fim_limite',
-            ),
-            CheckConstraint(
-                check=Q(hora_inicio__lte=time(23, 50, 0)),
-                name='hora_inicio_limite',
             ),
         ]
 
@@ -72,7 +68,7 @@ class Politico(models.Model):
     politico = models.CharField(max_length=100, unique=True)
     foto = models.ImageField(unique=True)
     partido = models.CharField(max_length=10)
-    num_partido = models.CharField(max_length=2, blank=True)
+    num_partido = models.CharField(max_length=2)
     cargo = models.CharField(max_length=50)
     urna = models.ForeignKey(Urna, on_delete=models.PROTECT, related_name='politicos')
 
@@ -97,13 +93,18 @@ class Voto(models.Model):
     eleitor = models.ForeignKey(Eleitor, on_delete=models.PROTECT, related_name='votos')
     politico = models.ForeignKey(Politico, on_delete=models.PROTECT, related_name='votos')
     urna = models.ForeignKey(Urna, on_delete=models.PROTECT, related_name='votos')
+    data_votacao = models.ForeignKey(dataVotacao, on_delete=models.PROTECT, related_name='votos')
     cargo = models.CharField(max_length=50)
 
     class Meta:
         constraints = [
             UniqueConstraint(
                 fields=['eleitor', 'cargo'],
-                name='voto_unico',
+                name='cargo_voto_unico',
+            ),
+            UniqueConstraint(
+                fields=['eleitor', 'urna', 'data_votacao'],
+                name='data_voto_unico',
             ),
         ]
 

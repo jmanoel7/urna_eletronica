@@ -2,7 +2,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render
 from urna.models import Urna, Politico, Eleitor, Voto, Resultado, dataVotacao
 from .forms import formIniciarVotacao
-from datetime import datetime, time, timedelta
+from datetime import datetime
 
 def iniciar_votacao(request):
     if request.method == 'GET':
@@ -29,6 +29,7 @@ def terminar_votacao(request):
                 {
                     'erro': True,
                     'msg_erro': 2,
+                    'calculo': None,
                     'resultado': None,
                 }
             )
@@ -38,16 +39,17 @@ def terminar_votacao(request):
                 {
                     'erro': True,
                     'msg_erro': 3,
+                    'calculo': None,
                     'resultado': None,
                 }
             )
         elif data_obj.hora_fim < datetime.now().time():
             cargo = 'Presidente da República'
             politico_branco = Politico.objects.get(
-                politico='Branco', partido='BRANCO', num_partido='  ', cargo=cargo
+                politico='Branco', partido='BRANCO', num_partido='00', cargo=cargo
             )
             politico_nulo = Politico.objects.get(
-                politico='Nulo', partido='NULO', num_partido='00', cargo=cargo
+                politico='Nulo', partido='NULO', num_partido='99', cargo=cargo
             )
             politico_pt = Politico.objects.get(
                 politico='Lula', partido='PT', num_partido='13', cargo=cargo
@@ -55,19 +57,30 @@ def terminar_votacao(request):
             politico_pl = Politico.objects.get(
                 politico='Bolsonaro', partido='PL', num_partido='22', cargo=cargo
             )
-            votos_branco = politico_branco.votos.all()
-            votos_nulo = politico_nulo.votos.all()
-            votos_pt = politico_pt.votos.all()
-            votos_pl = politico_pl.votos.all()
+            votos_branco = len(Voto.objects.filter(
+                politico_id = politico_branco.id,
+                data_votacao_id = data_obj.id,
+            ))
+            votos_nulo = len(Voto.objects.filter(
+                politico_id = politico_nulo.id,
+                data_votacao_id = data_obj.id,
+            ))
+            votos_pt = len(Voto.objects.filter(
+                politico_id = politico_pt.id,
+                data_votacao_id = data_obj.id,
+            ))
+            votos_pl = len(Voto.objects.filter(
+                politico_id = politico_pl.id,
+                data_votacao_id = data_obj.id,
+            ))
             votos_invalidos = votos_branco + votos_nulo
             votos_validos = votos_pt + votos_pl
-            total_votos = urna.votos.all()
-            total_eleitores = urna.eleitores.all()
+            total_votos = len(Voto.objects.filter(
+                    urna_id = urna.id,
+                    data_votacao_id = data_obj.id,
+            ))
+            total_eleitores = len( urna.eleitores.all() )
             ausentes = total_eleitores - total_votos
-            # voto_branco = Voto.objects.filter(politico_id=politico_branco.id)
-            # voto_nulo = Voto.objects.filter(politico_id=politico_nulo.id)
-            # voto_pt = Voto.objects.filter(politico_id=politico_pt.id)
-            # voto_pl = Voto.objects.filter(politico_id=politico_pl.id)
             resultado = Resultado.objects.create(
                 ausentes = ausentes,
                 votos_nulo = votos_nulo,
@@ -80,10 +93,78 @@ def terminar_votacao(request):
                 total_eleitores = total_eleitores,
             )
             resultado.save()
+            # votos inválidos
+            if resultado.votos_invalidos == 0:
+                voto_nulo = 0
+                voto_branco = 0
+            elif resultado.votos_invalidos > 0:
+                voto_nulo = (resultado.votos_nulo / resultado.votos_invalidos) * 100
+                voto_branco = (resultado.votos_branco / resultado.votos_invalidos) * 100
+            # votos válidos
+            if resultado.votos_validos == 0:
+                voto_pt = 0
+                voto_pl = 0
+            elif resultado.votos_validos > 0:
+                voto_pt = (resultado.votos_candidato_B / resultado.votos_validos) * 100
+                voto_pl = (resultado.votos_candidato_A / resultado.votos_validos) * 100
+            # total votos
+            if resultado.total_votos == 0:
+                votos_validos = 0
+                votos_invalidos = 0
+            elif resultado.total_votos > 0:
+                votos_validos = (resultado.votos_validos / resultado.total_votos) * 100
+                votos_invalidos = (resultado.votos_invalidos / resultado.total_votos) * 100
+            total_votos = (resultado.total_votos / resultado.total_eleitores) * 100
+            ausentes = (resultado.ausentes / resultado.total_eleitores) * 100
+            # correcao dos votos para apresentacao na tabela final - inicio
+            if voto_nulo == 0.0:
+                voto_nulo = 0
+            elif voto_nulo == 100.0:
+                voto_nulo = 100
+            if voto_branco == 0.0:
+                voto_branco = 0
+            elif voto_branco == 100.0:
+                voto_branco = 100
+            if voto_pl == 0.0:
+                voto_pl = 0
+            elif voto_pl == 100.0:
+                voto_pl = 100
+            if voto_pt == 0.0:
+                voto_pt = 0
+            elif voto_pt == 100.0:
+                voto_pt = 100
+            if votos_validos == 0.0:
+                votos_validos = 0
+            elif votos_validos == 100.0:
+                votos_validos = 100
+            if votos_invalidos == 0.0:
+                votos_invalidos = 0
+            elif votos_invalidos == 100.0:
+                votos_invalidos = 100
+            if total_votos == 0.0:
+                total_votos = 0
+            elif total_votos == 100.0:
+                total_votos = 100
+            if ausentes == 0.0:
+                ausentes = 0
+            elif ausentes == 100.0:
+                ausentes = 100
+            # correcao dos votos para apresentacao na tabela final - fim
+            calculo = {
+                'voto_nulo': voto_nulo,
+                'voto_branco': voto_branco,
+                'voto_pl': voto_pl,
+                'voto_pt': voto_pt,
+                'votos_validos': votos_validos,
+                'votos_invalidos': votos_invalidos,
+                'total_votos': total_votos,
+                'ausentes': ausentes,
+            }
             return render(request, 'votar/terminar-votacao.html',
                 {
                     'erro': False,
                     'msg_erro': 0,
+                    'calculo': calculo,
                     'resultado': resultado,
                 }
             )
@@ -92,6 +173,7 @@ def terminar_votacao(request):
             {
                 'erro': True,
                 'msg_erro': 1,
+                'calculo': None,
                 'resultado': None,
             }
         )
@@ -279,10 +361,13 @@ def votar(request):
             politico_id = politico_bd.id
             eleitor_bd = Eleitor.objects.get(titulo_eleitor=titulo_eleitor)
             eleitor_id = eleitor_bd.id
+            data_votacao_bd = dataVotacao.objects.get(data_votacao=datetime.now().date())
+            data_votacao_id = data_votacao_bd.id
             voto = Voto.objects.create(
                 eleitor_id=eleitor_id,
                 politico_id=politico_id,
                 urna_id=urna_id,
+                data_votacao_id=data_votacao_id,
                 cargo=cargo,
             )
             voto.save()

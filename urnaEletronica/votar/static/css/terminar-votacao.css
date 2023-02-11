@@ -14,3 +14,7 @@ h3 {
     vertical-align: middle;
     color: darkblue;
 }
+
+table, thead, tbody {
+    border: 2px double #000;
+}

@@ -1,6 +1,6 @@
 {% extends "votar/base.html" %}
 
-{% block title %}Urna Eletrônica - Terminar Votação{% endblock title %}
+{% block title %}Urna Eletrônica - Resultado da Votação{% endblock title %}
 
 {% block head %}
 
@@ -14,7 +14,7 @@
 <div class='row'>
     <div class='col-md-4 mx-auto'>
 
-        <p><h3>Terminar Votação</h3></p>
+        <p><h3>Resultado da Votação</h3></p>
         <hr>
 
         {% if erro %}
@@ -44,60 +44,69 @@
 
         {% else %}
 
-            <table>
-                <tr>
-                    <th>Votação</th>
-                    <th>Total Bruto</th>
-                    <th>Porcentagem (%)</th>
-                </tr>
-                <tr>
-                    <td>Votos Nulos</td>
-                    <td>{{ resultado.votos_nulo }}</td>
-                    <td>{{ (resultado.votos_nulo / resultado.votos_invalidos) * 100 }}%</td>
-                </tr>
-                <tr>
-                    <td>Votos Brancos</td>
-                    <td>{{ resultado.votos_branco }}</td>
-                    <td>{{ (resultado.votos_branco / resultado.votos_invalidos) * 100 }}%</td>
-                </tr>
-                <tr>
-                    <td>Votos em Bolsonaro</td>
-                    <td>{{ resultado.votos_candidato_A }}</td>
-                    <td>{{ (resultado.votos_candidato_A / resultado.votos_validos) * 100 }}%</td>
-                </tr>
-                <tr>
-                    <td>Votos em Lula</td>
-                    <td>{{ resultado.votos_candidato_B }}</td>
-                    <td>{{ (resultado;votos_candidato_B / resultado.votos_validos) * 100 }}%</td>
-                </tr>
-                <tr>
-                    <td>Total de Votos Válidos</td>
-                    <td>{{ resultado.votos_validos }}</td>
-                    <td>{{ (resultado.votos_validos / resultado.total_votos) * 100 }}%</td>
-                </tr>
-                <tr>
-                    <td>Total de Votos Inválidos</td>
-                    <td>{{ resultado.votos_invalidos }}</td>
-                    <td>{{ (resultado.votos_invalidos / resultado.total_votos) * 100 }}%</td>
-                </tr>
-                <tr>
-                    <td>Total de Votos</td>
-                    <td>{{ resultado.total_votos }}</td>
-                    <td>{{ (resultado.total_votos / resultado.total_eleitores) * 100 }}%</td>
-                </tr>
-                <tr>
-                    <td>Ausência</td>
-                    <td>{{ resultado.ausentes }}</td>
-                    <td>{{ (resultado.ausentes / resultado.total_eleitores) * 100 }}%</td>
-                </tr>
-                <tr>
-                    <td>Total de Eleitores</td>
-                    <td>{{ resultado.total_eleitores }}</td>
-                    <td>100 %</td>
-                </tr>
+            <table class="table table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th>Votação</th>
+                        <th>Total Bruto</th>
+                        <th>Porcentagem (%)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Votos Nulos</td>
+                        <td>{{ resultado.votos_nulo }}</td>
+                        <td>{{ calculo.voto_nulo }}%</td>
+                    </tr>
+                    <tr>
+                        <td>Votos Brancos</td>
+                        <td>{{ resultado.votos_branco }}</td>
+                        <td>{{ calculo.voto_branco }}%</td>
+                    </tr>
+                    <tr>
+                        <td>Votos em Bolsonaro</td>
+                        <td>{{ resultado.votos_candidato_A }}</td>
+                        <td>{{ calculo.voto_pl }}%</td>
+                    </tr>
+                    <tr>
+                        <td>Votos em Lula</td>
+                        <td>{{ resultado.votos_candidato_B }}</td>
+                        <td>{{ calculo.voto_pt }}%</td>
+                    </tr>
+                    <tr>
+                        <td>Total de Votos Válidos</td>
+                        <td>{{ resultado.votos_validos }}</td>
+                        <td>{{ calculo.votos_validos }}%</td>
+                    </tr>
+                    <tr>
+                        <td>Total de Votos Inválidos</td>
+                        <td>{{ resultado.votos_invalidos }}</td>
+                        <td>{{ calculo.votos_invalidos }}%</td>
+                    </tr>
+                    <tr>
+                        <td>Total de Votos</td>
+                        <td>{{ resultado.total_votos }}</td>
+                        <td>{{ calculo.total_votos }}%</td>
+                    </tr>
+                    <tr>
+                        <td>Ausência</td>
+                        <td>{{ resultado.ausentes }}</td>
+                        <td>{{ calculo.ausentes }}%</td>
+                    </tr>
+                    <tr>
+                        <td>Total de Eleitores</td>
+                        <td>{{ resultado.total_eleitores }}</td>
+                        <td>100 %</td>
+                    </tr>
+                </tbody>
             </table>
 
         {% endif %}
+
+        <hr/>
+        <p>
+            <a href="{% url 'logout' %}"><button>Logout</button></a>
+        </p>
 
     </div>
 </div>
