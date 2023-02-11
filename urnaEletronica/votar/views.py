@@ -29,6 +29,7 @@ def terminar_votacao(request):
                 {
                     'erro': True,
                     'msg_erro': 2,
+                    'msg_voto': None,
                     'calculo': None,
                     'resultado': None,
                 }
@@ -39,6 +40,7 @@ def terminar_votacao(request):
                 {
                     'erro': True,
                     'msg_erro': 3,
+                    'msg_voto': None,
                     'calculo': None,
                     'resultado': None,
                 }
@@ -150,6 +152,16 @@ def terminar_votacao(request):
             elif ausentes == 100.0:
                 ausentes = 100
             # correcao dos votos para apresentacao na tabela final - fim
+            # verificacao do vencedor da eleicao - inicio
+            if voto_pl == 0 and voto_pt == 0:
+                msg_voto = 0
+            elif voto_pt == voto_pl:
+                msg_voto = 1
+            elif voto_pl > voto_pt:
+                msg_voto = 2
+            elif voto_pt > voto_pl:
+                msg_voto = 3
+            # verificacao do vencedor da eleicao - fim
             calculo = {
                 'voto_nulo': voto_nulo,
                 'voto_branco': voto_branco,
@@ -164,6 +176,7 @@ def terminar_votacao(request):
                 {
                     'erro': False,
                     'msg_erro': 0,
+                    'msg_voto': msg_voto,
                     'calculo': calculo,
                     'resultado': resultado,
                 }
@@ -173,6 +186,7 @@ def terminar_votacao(request):
             {
                 'erro': True,
                 'msg_erro': 1,
+                'msg_voto': None,
                 'calculo': None,
                 'resultado': None,
             }

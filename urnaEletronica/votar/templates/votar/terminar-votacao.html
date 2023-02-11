@@ -15,7 +15,7 @@
     <div class='col-md-4 mx-auto'>
 
         <p><h3>Resultado da Votação</h3></p>
-        <hr>
+        <hr/>
 
         {% if erro %}
 
@@ -40,9 +40,38 @@
                 {% endif %}
 
             </p>
-            <hr>
+            <hr/>
 
         {% else %}
+
+            <p class="msg-voto">
+
+                {% if msg_voto == 0 %}
+                    Resultado Final: ninguém ganhou a eleição !!!<br/>
+                    Ambos os candidatos receberam 0 votos.<br/>
+                    Confira a tabela abaixo com o resultado da eleição.<br/>
+                {% endif %}
+
+                {% if msg_voto == 1 %}
+                    Resultado Final: ninguém ganhou a eleição !!!<br/>
+                    Houve empate entre os dois candidatos.<br/>
+                    Confira a tabela abaixo com o resultado da eleição.<br/>
+                {% endif %}
+                
+                {% if msg_voto == 2 %}
+                    Resultado Final: Bolsonaro venceu a eleição !!!<br/>
+                    Bolsonaro recebeu mais votos que o Lula.<br/>
+                    Confira a tabela abaixo com o resultado da eleição.<br/>
+                {% endif %}
+
+                {% if msg_voto == 3 %}
+                    Resultado Final: Lula venceu a eleição !!!<br/>
+                    Lula recebeu mais votos que o Bolsonaro.<br/>
+                    Confira a tabela abaixo com o resultado da eleição.<br/>
+                {% endif %}
+
+            </p>
+            <hr/>
 
             <table class="table table-hover table-bordered">
                 <thead>
@@ -100,13 +129,14 @@
                     </tr>
                 </tbody>
             </table>
+            <hr/>
 
         {% endif %}
-
-        <hr/>
+        
         <p>
             <a href="{% url 'logout' %}"><button>Logout</button></a>
         </p>
+        <hr/>
 
     </div>
 </div>
