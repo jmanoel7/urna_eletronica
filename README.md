@@ -63,7 +63,7 @@ cd git
 git clone https://github.com/jmanoel7/urna_eletronica.git
 cd urna_eletronica
 mkdir ./venv
-virtualenv ./venv/urna_eletronica
+virtualenv -p /usr/bin/python3.11 ./venv/urna_eletronica
 ./venv/urna_eletronica/bin/activate
 pip install -U pip
 pip install -r requirements.txt
@@ -72,14 +72,14 @@ pip install -r requirements.txt
 4. Executar a seguinte linha de código para executar o software da urna eletrônica:
 ```bash
 cd ~/git/urna_eletronica/urnaEletronica
-source ./venv/urna_eletronica/bin/activate
+source ../venv/urna_eletronica/bin/activate
 python manage.py runserver
 ```
 
 5. Executar a seguinte linha de código para saber quais opções estão disponíveis:
 ```bash
 cd ~/git/urna_eletronica/urnaEletronica
-source ./venv/urna_eletronica/bin/activate
+source ../venv/urna_eletronica/bin/activate
 python manage.py
 ```
 
