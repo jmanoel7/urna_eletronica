@@ -11,134 +11,131 @@
 
 {% block content %}
 
-<div class='row'>
-    <div class='col-md-4 mx-auto'>
+<div class="container mt-3">
 
-        <p><h3>Resultado da Votação</h3></p>
-        <hr/>
+    <p><h3>Resultado da Votação</h3></p>
+    <hr/>
 
-        {% if erro %}
+    {% if erro %}
 
-            <p class="msg-erro">
+        <p class="msg-erro">
 
-                {% if msg_erro == 1 %}
-                    ERRO: não foi possível terminar a votação !!!<br/>
-                    O dia de hoje não é dia de votação.<br/>
-                    Volte noutro dia, após a votação.<br/>
-                {% endif %}
+            {% if msg_erro == 1 %}
+                ERRO: não foi possível terminar a votação !!!<br/>
+                O dia de hoje não é dia de votação.<br/>
+                Volte noutro dia, após a votação.<br/>
+            {% endif %}
 
-                {% if msg_erro == 2 %}
-                    ERRO: não foi possível terminar a votação !!!<br/>
-                    A votação nem se iniciou, volte<br/>
-                    após o encerramento da votação.<br/>
-                {% endif %}
+            {% if msg_erro == 2 %}
+                ERRO: não foi possível terminar a votação !!!<br/>
+                A votação nem se iniciou, volte<br/>
+                após o encerramento da votação.<br/>
+            {% endif %}
 
-                {% if msg_erro == 3 %}
-                    ERRO: não foi possível terminar a votação !!!<br/>
-                    A votação está em andamento, volte<br/>
-                    após o encerramento da votação.<br/>
-                {% endif %}
+            {% if msg_erro == 3 %}
+                ERRO: não foi possível terminar a votação !!!<br/>
+                A votação está em andamento, volte<br/>
+                após o encerramento da votação.<br/>
+            {% endif %}
 
-            </p>
-            <hr/>
-
-        {% else %}
-
-            <p class="msg-voto">
-
-                {% if msg_voto == 0 %}
-                    Resultado Final: ninguém ganhou a eleição !!!<br/>
-                    Ambos os candidatos receberam 0 votos.<br/>
-                    Confira a tabela abaixo com o resultado da eleição.<br/>
-                {% endif %}
-
-                {% if msg_voto == 1 %}
-                    Resultado Final: ninguém ganhou a eleição !!!<br/>
-                    Houve empate entre os dois candidatos.<br/>
-                    Confira a tabela abaixo com o resultado da eleição.<br/>
-                {% endif %}
-                
-                {% if msg_voto == 2 %}
-                    Resultado Final: Bolsonaro venceu a eleição !!!<br/>
-                    Bolsonaro recebeu mais votos que o Lula.<br/>
-                    Confira a tabela abaixo com o resultado da eleição.<br/>
-                {% endif %}
-
-                {% if msg_voto == 3 %}
-                    Resultado Final: Lula venceu a eleição !!!<br/>
-                    Lula recebeu mais votos que o Bolsonaro.<br/>
-                    Confira a tabela abaixo com o resultado da eleição.<br/>
-                {% endif %}
-
-            </p>
-            <hr/>
-
-            <table class="table table-hover table-bordered">
-                <thead>
-                    <tr>
-                        <th>Votação</th>
-                        <th>Total Bruto</th>
-                        <th>Porcentagem (%)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Votos Nulos</td>
-                        <td>{{ resultado.votos_nulo }}</td>
-                        <td>{{ calculo.voto_nulo }}%</td>
-                    </tr>
-                    <tr>
-                        <td>Votos Brancos</td>
-                        <td>{{ resultado.votos_branco }}</td>
-                        <td>{{ calculo.voto_branco }}%</td>
-                    </tr>
-                    <tr>
-                        <td>Votos em Bolsonaro</td>
-                        <td>{{ resultado.votos_candidato_A }}</td>
-                        <td>{{ calculo.voto_pl }}%</td>
-                    </tr>
-                    <tr>
-                        <td>Votos em Lula</td>
-                        <td>{{ resultado.votos_candidato_B }}</td>
-                        <td>{{ calculo.voto_pt }}%</td>
-                    </tr>
-                    <tr>
-                        <td>Total de Votos Válidos</td>
-                        <td>{{ resultado.votos_validos }}</td>
-                        <td>{{ calculo.votos_validos }}%</td>
-                    </tr>
-                    <tr>
-                        <td>Total de Votos Inválidos</td>
-                        <td>{{ resultado.votos_invalidos }}</td>
-                        <td>{{ calculo.votos_invalidos }}%</td>
-                    </tr>
-                    <tr>
-                        <td>Total de Votos</td>
-                        <td>{{ resultado.total_votos }}</td>
-                        <td>{{ calculo.total_votos }}%</td>
-                    </tr>
-                    <tr>
-                        <td>Ausência</td>
-                        <td>{{ resultado.ausentes }}</td>
-                        <td>{{ calculo.ausentes }}%</td>
-                    </tr>
-                    <tr>
-                        <td>Total de Eleitores</td>
-                        <td>{{ resultado.total_eleitores }}</td>
-                        <td>100 %</td>
-                    </tr>
-                </tbody>
-            </table>
-            <hr/>
-
-        {% endif %}
-        
-        <p>
-            <a href="{% url 'logout' %}"><button>Logout</button></a>
         </p>
         <hr/>
 
-    </div>
+    {% else %}
+
+        <p class="msg-voto">
+
+            {% if msg_voto == 0 %}
+                Resultado Final: ninguém ganhou a eleição !!!<br/>
+                Ambos os candidatos receberam 0 votos.<br/>
+                Confira a tabela abaixo com o resultado da eleição.<br/>
+            {% endif %}
+
+            {% if msg_voto == 1 %}
+                Resultado Final: ninguém ganhou a eleição !!!<br/>
+                Houve empate entre os dois candidatos.<br/>
+                Confira a tabela abaixo com o resultado da eleição.<br/>
+            {% endif %}
+            
+            {% if msg_voto == 2 %}
+                Resultado Final: Bolsonaro venceu a eleição !!!<br/>
+                Bolsonaro recebeu mais votos que o Lula.<br/>
+                Confira a tabela abaixo com o resultado da eleição.<br/>
+            {% endif %}
+
+            {% if msg_voto == 3 %}
+                Resultado Final: Lula venceu a eleição !!!<br/>
+                Lula recebeu mais votos que o Bolsonaro.<br/>
+                Confira a tabela abaixo com o resultado da eleição.<br/>
+            {% endif %}
+
+        </p>
+        <hr/>
+
+        <table class="table table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th>Votação</th>
+                    <th>Total Bruto</th>
+                    <th>Porcentagem (%)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Votos Nulos</td>
+                    <td>{{ resultado.votos_nulo }}</td>
+                    <td>{{ calculo.voto_nulo|floatformat:"-2" }}% (votos inválidos)</td>
+                </tr>
+                <tr>
+                    <td>Votos Brancos</td>
+                    <td>{{ resultado.votos_branco }}</td>
+                    <td>{{ calculo.voto_branco|floatformat:"-2" }}% (votos inválidos)</td>
+                </tr>
+                <tr>
+                    <td>Votos em Bolsonaro</td>
+                    <td>{{ resultado.votos_candidato_A }}</td>
+                    <td>{{ calculo.voto_pl|floatformat:"-2" }}% (votos válidos)</td>
+                </tr>
+                <tr>
+                    <td>Votos em Lula</td>
+                    <td>{{ resultado.votos_candidato_B }}</td>
+                    <td>{{ calculo.voto_pt|floatformat:"-2" }}% (votos válidos)</td>
+                </tr>
+                <tr>
+                    <td>Total de Votos Válidos</td>
+                    <td>{{ resultado.votos_validos }}</td>
+                    <td>{{ calculo.votos_validos|floatformat:"-2" }}%</td>
+                </tr>
+                <tr>
+                    <td>Total de Votos Inválidos</td>
+                    <td>{{ resultado.votos_invalidos }}</td>
+                    <td>{{ calculo.votos_invalidos|floatformat:"-2" }}%</td>
+                </tr>
+                <tr>
+                    <td>Total de Votos</td>
+                    <td>{{ resultado.total_votos }}</td>
+                    <td>{{ calculo.total_votos|floatformat:"-2" }}%</td>
+                </tr>
+                <tr>
+                    <td>Ausência</td>
+                    <td>{{ resultado.ausentes }}</td>
+                    <td>{{ calculo.ausentes|floatformat:"-2" }}%</td>
+                </tr>
+                <tr>
+                    <td>Total de Eleitores</td>
+                    <td>{{ resultado.total_eleitores }}</td>
+                    <td>100%</td>
+                </tr>
+            </tbody>
+        </table>
+        <hr/>
+
+    {% endif %}
+    
+    <p>
+        <a href="{% url 'logout' %}"><button>Logout</button></a>
+    </p>
+
 </div>
 
 {% endblock content %}

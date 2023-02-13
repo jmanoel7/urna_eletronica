@@ -118,40 +118,6 @@ def terminar_votacao(request):
                 votos_invalidos = (resultado.votos_invalidos / resultado.total_votos) * 100
             total_votos = (resultado.total_votos / resultado.total_eleitores) * 100
             ausentes = (resultado.ausentes / resultado.total_eleitores) * 100
-            # correcao dos votos para apresentacao na tabela final - inicio
-            if voto_nulo == 0.0:
-                voto_nulo = 0
-            elif voto_nulo == 100.0:
-                voto_nulo = 100
-            if voto_branco == 0.0:
-                voto_branco = 0
-            elif voto_branco == 100.0:
-                voto_branco = 100
-            if voto_pl == 0.0:
-                voto_pl = 0
-            elif voto_pl == 100.0:
-                voto_pl = 100
-            if voto_pt == 0.0:
-                voto_pt = 0
-            elif voto_pt == 100.0:
-                voto_pt = 100
-            if votos_validos == 0.0:
-                votos_validos = 0
-            elif votos_validos == 100.0:
-                votos_validos = 100
-            if votos_invalidos == 0.0:
-                votos_invalidos = 0
-            elif votos_invalidos == 100.0:
-                votos_invalidos = 100
-            if total_votos == 0.0:
-                total_votos = 0
-            elif total_votos == 100.0:
-                total_votos = 100
-            if ausentes == 0.0:
-                ausentes = 0
-            elif ausentes == 100.0:
-                ausentes = 100
-            # correcao dos votos para apresentacao na tabela final - fim
             # verificacao do vencedor da eleicao - inicio
             if voto_pl == 0 and voto_pt == 0:
                 msg_voto = 0
