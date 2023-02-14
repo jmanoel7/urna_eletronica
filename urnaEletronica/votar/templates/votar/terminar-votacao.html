@@ -11,7 +11,17 @@
 
 {% block content %}
 
+{% if erro %}
+
+<div class='row'>
+<div class='col-md-4 mx-auto'>
+
+{% else %}
+
 <div class="container mt-3">
+
+{% endif %}
+
 
     <p><h3>Resultado da Votação</h3></p>
     <hr/>
@@ -136,6 +146,15 @@
         <a href="{% url 'logout' %}"><button>Logout</button></a>
     </p>
 
+{% if erro %}
+
 </div>
+</div>
+
+{% else %}
+
+</div>
+
+{% endif %}
 
 {% endblock content %}

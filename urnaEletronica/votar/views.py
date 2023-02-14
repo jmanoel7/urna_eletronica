@@ -215,9 +215,28 @@ def eleitor(request):
         titulo_eleitor = request.POST.get('titulo_eleitor')
         eleitor_bd = Eleitor.objects.get(titulo_eleitor=titulo_eleitor)
         eleitor_id = eleitor_bd.id
+        try:
+            data_votacao_bd = dataVotacao.objects.get(data_votacao=datetime.now().date())
+        except ObjectDoesNotExist:
+            data_votacao_bd = None
+        if data_votacao_bd is None:
+            return render(request, 'votar/selecionar-eleitor.html',
+                {
+                    'eleitores': eleitores,
+                    'eleitor': None,
+                    'urna': urna,
+                    'urna_id': urna_id,
+                    'erro': True,
+                    'msg_erro': 3,
+                }
+            )
+        else:
+            data_votacao_id = data_votacao_bd.id
         cargo = 'Presidente da República'
         try:
-            voto_bd = Voto.objects.get(eleitor_id=eleitor_id, cargo=cargo)
+            voto_bd = Voto.objects.get(
+                eleitor_id=eleitor_id, data_votacao_id=data_votacao_id, cargo=cargo
+            )
         except ObjectDoesNotExist:
             voto_bd = None
         if voto_bd is None:

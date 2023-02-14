@@ -29,7 +29,7 @@
                 {% if erro %}
 
                     <hr>
-                    <span class="msg-erro"><br/>
+                    <p class="msg-erro"><br/>
 
                     {% if msg_erro == 1 %}
                         ERRO: a urna ainda não está<br/>
@@ -48,14 +48,14 @@
                         não está marcada para<br/>
                         o dia de hoje!<br/>
                     {% endif %}
-                    
+
                     {% if msg_erro == 4 %}
                         ERRO: o eleitor escolhido:<br/>
                         {{ eleitor }}<br/>
                         já votou! Escolha outro eleitor!<br/>                
                     {% endif %}
 
-                    </span>
+                    </p>
                     <hr>
 
                 {% endif %}

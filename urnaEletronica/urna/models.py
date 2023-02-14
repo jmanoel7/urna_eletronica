@@ -26,15 +26,15 @@ class dataVotacao(models.Model):
         constraints = [
             CheckConstraint(
                 check=Q(data_votacao__gte=datetime.now().date()),
-                name='data_votacao_maior_ou_igual_hoje',
+                name='data_votacao_hoje',
             ),
             CheckConstraint(
                 check=Q(hora_inicio__gte=datetime.now().time()),
-                name='hora_inicio_maior_ou_igual_agora',
+                name='hora_inicio_agora',
             ),
             CheckConstraint(
                 check=Q(hora_fim__gt=F('hora_inicio')),
-                name='hora_fim_maior_inicio',
+                name='hora_fim_maior',
             ),
         ]
 
@@ -99,12 +99,8 @@ class Voto(models.Model):
     class Meta:
         constraints = [
             UniqueConstraint(
-                fields=['eleitor', 'cargo'],
-                name='cargo_voto_unico',
-            ),
-            UniqueConstraint(
-                fields=['eleitor', 'urna', 'data_votacao'],
-                name='data_voto_unico',
+                fields=['eleitor', 'data_votacao', 'cargo'],
+                name='voto_unico',
             ),
         ]
 
