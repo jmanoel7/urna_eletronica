@@ -99,3 +99,10 @@ Uma vez instalado o sistema, ao excutá-lo conforme o item 4 acima, você terá 
 Lembrando sempre que o voto em branco tem o número de partido 00, e que o voto nulo tem o número de parrtido 99, para votar em branco tem um botão só para isso, já para votar nulo é só votar um número diferente dos partidos políticos cadastrados (13 e 22) que ele se tranforma automaticamente em número 99.**
 
 ---
+
+Link do Youtube com a apresentação do funcionamento do protótipo da urna eletrônica:
+
+[Link da Gravação no Youtube](https://youtu.be/MSTmX90iN8s "Link da Gravação no Youtube")
+
+---
+
