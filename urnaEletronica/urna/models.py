@@ -28,10 +28,10 @@ class dataVotacao(models.Model):
                 check=Q(data_votacao__gte=datetime.now().date()),
                 name='data_votacao_hoje',
             ),
-            CheckConstraint(
-                check=Q(hora_inicio__gte=datetime.now().time()),
-                name='hora_inicio_agora',
-            ),
+            #  CheckConstraint(
+            #      check=Q(hora_inicio__gte=datetime.now().time()),
+            #      name='hora_inicio_agora',
+            #  ),
             CheckConstraint(
                 check=Q(hora_fim__gt=F('hora_inicio')),
                 name='hora_fim_maior',

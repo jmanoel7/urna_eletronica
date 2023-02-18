@@ -95,14 +95,14 @@ Uma vez instalado o sistema, ao excutá-lo conforme o item 4 acima, você terá 
 
 - assistente: para atender o eleitor e encaminhá-lo à urna para o voto, respeitando a data e os horários de início e de fim (cadastrados pelo gerente), e que o eleitor só pode votar uma única vez a cada eleição.
 
-**OBS: todas as 3 opções de login acima (nome de usuário), tem a mesma senha: TESte!23$ .
-Lembrando sempre que o voto em branco tem o número de partido 00, e que o voto nulo tem o número de parrtido 99, para votar em branco tem um botão só para isso, já para votar nulo é só votar um número diferente dos partidos políticos cadastrados (13 e 22) que ele se tranforma automaticamente em número 99.**
+**OBS: todas as 3 opções de login acima (nome de usuário), tem a mesma senha: TESte!23$ .**
+**Lembrando sempre que o voto em branco tem o número de partido 00, e que o voto nulo tem o número de parrtido 99, para votar em branco tem um botão só para isso, já para votar nulo é só votar um número diferente dos partidos políticos cadastrados (13 e 22) que ele se tranforma automaticamente em número 99.**
 
 ---
 
-Link do Youtube com a apresentação do funcionamento do protótipo da urna eletrônica:
+Link do Youtube com a apresentação do funcionamento do software da urna eletrônica:
 
-[Link da Gravação no Youtube](https://youtu.be/MSTmX90iN8s "Link da Gravação no Youtube")
+[Link da Apresentação no Youtube](https://youtu.be/BbCcCkWUXI4 "Link da Apresentação no Youtube")
 
 ---
 
