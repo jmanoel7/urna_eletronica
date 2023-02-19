@@ -5,7 +5,7 @@
 {% block head %}
 
     {% load static %}
-    <link rel="stylesheet" href="{% static 'css/terminar-votacao.css' %}">
+    <link rel="stylesheet" href="{% static 'css/resultado-votacao.css' %}">
 
 {% endblock head %}
 
@@ -23,7 +23,7 @@
 {% endif %}
 
 
-    <p><h3>Resultado da Votação</h3></p>
+    <h5>Urna Eletrônica - Resultado da Votação</h5>
     <hr/>
 
     {% if erro %}
@@ -31,19 +31,19 @@
         <p class="msg-erro">
 
             {% if msg_erro == 1 %}
-                ERRO: não foi possível terminar a votação !!!<br/>
+                ERRO: não temos o resultado da votação !!!<br/>
                 O dia de hoje não é dia de votação.<br/>
                 Volte noutro dia, após a votação.<br/>
             {% endif %}
 
             {% if msg_erro == 2 %}
-                ERRO: não foi possível terminar a votação !!!<br/>
+                ERRO: não temos o resultado da votação !!!<br/>
                 A votação nem se iniciou, volte<br/>
                 após o encerramento da votação.<br/>
             {% endif %}
 
             {% if msg_erro == 3 %}
-                ERRO: não foi possível terminar a votação !!!<br/>
+                ERRO: não temos o resultado da votação !!!<br/>
                 A votação está em andamento, volte<br/>
                 após o encerramento da votação.<br/>
             {% endif %}
@@ -66,7 +66,7 @@
                 Houve empate entre os dois candidatos.<br/>
                 Confira a tabela abaixo com o resultado da eleição.<br/>
             {% endif %}
-            
+
             {% if msg_voto == 2 %}
                 Resultado Final: Bolsonaro venceu a eleição !!!<br/>
                 Bolsonaro recebeu mais votos que o Lula.<br/>
@@ -141,7 +141,7 @@
         <hr/>
 
     {% endif %}
-    
+
     <p>
         <a href="{% url 'logout' %}"><button>Logout</button></a>
     </p>

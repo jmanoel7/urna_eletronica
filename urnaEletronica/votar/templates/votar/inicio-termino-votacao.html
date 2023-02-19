@@ -1,11 +1,11 @@
 {% extends "votar/base.html" %}
 
-{% block title %}Urna Eletrônica - Iniciar Votação{% endblock title %}
+{% block title %}Urna Eletrônica - Definir o Início e o Término da Votação{% endblock title %}
 
 {% block head %}
 
     {% load static %}
-    <link rel="stylesheet" href="{% static 'css/iniciar-votacao.css' %}">
+    <link rel="stylesheet" href="{% static 'css/inicio-termino-votacao.css' %}">
 
 {% endblock head %}
 
@@ -16,7 +16,7 @@
 <div class='row'>
     <div class='col-md-4 mx-auto'>
 
-        <p><h3>Iniciar Votação</h3><p>
+        <h5>Urna Eletrônica - Definir o Início e o Término da Votação</h5>
         <hr>
 
         {% if erro %}
@@ -29,12 +29,12 @@
 
         {% endif %}
 
-        <form action="{% url 'iniciar-votacao' %}" method="POST">{% csrf_token %}
+        <form action="{% url 'inicio-termino-votacao' %}" method="POST">{% csrf_token %}
 
             {{ form|crispy }}
 
             <p>
-                <input type="submit" value="Inicar Votação">
+                <input type="submit" value="Definir o Início e o Término da Votação">
             </p>
 
 

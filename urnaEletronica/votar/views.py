@@ -4,20 +4,21 @@ from urna.models import Urna, Politico, Eleitor, Voto, Resultado, dataVotacao
 from .forms import formIniciarVotacao
 from datetime import datetime
 
-def iniciar_votacao(request):
+
+def inicio_termino_votacao(request):
     if request.method == 'GET':
         form = formIniciarVotacao()
-        return render(request, 'votar/iniciar-votacao.html', {'form': form, 'erro': False})
+        return render(request, 'votar/inicio-termino-votacao.html', {'form': form, 'erro': False})
     elif request.method == 'POST':
         form = formIniciarVotacao(request.POST)
         if form.is_valid():
             form.save()
-            return render(request, 'votar/iniciar-votacao-sucesso.html')
+            return render(request, 'votar/inicio-termino-votacao-sucesso.html')
         else:
-            return render(request, 'votar/iniciar-votacao.html', {'form': form, 'erro': True})
+            return render(request, 'votar/inicio-termino-votacao.html', {'form': form, 'erro': True})
 
 
-def terminar_votacao(request):
+def resultado_votacao(request):
     urna = Urna.objects.get(zona='0035', secao='0080', municipio='Goiânia', uf='GO')
     try:
         data_obj = dataVotacao.objects.get(data_votacao=datetime.now().date())
@@ -25,7 +26,7 @@ def terminar_votacao(request):
         data_obj= None
     if data_obj is not None:
         if data_obj.hora_inicio > datetime.now().time():
-            return render(request, 'votar/terminar-votacao.html',
+            return render(request, 'votar/resultado-votacao.html',
                 {
                     'erro': True,
                     'msg_erro': 2,
@@ -36,7 +37,7 @@ def terminar_votacao(request):
             )
         elif ( data_obj.hora_inicio <= datetime.now().time() ) and \
             ( data_obj.hora_fim >= datetime.now().time() ):
-            return render(request, 'votar/terminar-votacao.html',
+            return render(request, 'votar/resultado-votacao.html',
                 {
                     'erro': True,
                     'msg_erro': 3,
@@ -138,7 +139,7 @@ def terminar_votacao(request):
                 'total_votos': total_votos,
                 'ausentes': ausentes,
             }
-            return render(request, 'votar/terminar-votacao.html',
+            return render(request, 'votar/resultado-votacao.html',
                 {
                     'erro': False,
                     'msg_erro': 0,
@@ -148,7 +149,7 @@ def terminar_votacao(request):
                 }
             )
     else:
-        return render(request, 'votar/terminar-votacao.html',
+        return render(request, 'votar/resultado-votacao.html',
             {
                 'erro': True,
                 'msg_erro': 1,
@@ -262,7 +263,7 @@ def eleitor(request):
                     'msg_erro': 4,
                 }
             )
-            
+
 
 def votar(request):
     if request.method == 'GET':

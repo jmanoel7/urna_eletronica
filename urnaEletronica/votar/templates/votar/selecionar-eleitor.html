@@ -14,11 +14,11 @@
 <div class='row'>
     <div class='col-md-4 mx-auto'>
 
-        <p><h3>Urna Eletrônica - Selecionar Eleitor</h3></p>
+        <h5>Urna Eletrônica - Selecionar Eleitor</h5>
         <hr>
 
         <form action="{% url 'selecionar-eleitor' %}" method="POST">{% csrf_token %}
-            
+
             <p>
                 <label for="urna">Urna:</label><br/>
                 <input type='text' name='urna' id='urna' value='{{ urna }}' size='50' readonly>
@@ -36,7 +36,7 @@
                         aberta para receber votos,<br/>
                         espere pelo início da votação!<br/>
                     {% endif %}
-                    
+
                     {% if msg_erro == 2 %}
                         ERRO: a urna já não está<br/>
                         recebendo mais votos,<br/>
@@ -52,7 +52,7 @@
                     {% if msg_erro == 4 %}
                         ERRO: o eleitor escolhido:<br/>
                         {{ eleitor }}<br/>
-                        já votou! Escolha outro eleitor!<br/>                
+                        já votou! Escolha outro eleitor!<br/>
                     {% endif %}
 
                     </p>
