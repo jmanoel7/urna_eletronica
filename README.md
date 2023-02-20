@@ -83,6 +83,16 @@ source ../venv/urna_eletronica/bin/activate
 python manage.py
 ```
 
+**OBS: Não é necessário usar o Python3.11 do Python PPA para Ubuntu, vc pode usar o Python3.10 que é o padrão**
+**no Ubuntu GNU/Linux 22.04 LTS, e vc pode usar o Python a partir da versão 3.9 que funciona, já testei,**
+**assim, vc pode usar Python a partir do Python3.9 em outras distribuições GNU/Linux que o código da**
+**urna deste repositório vai funcionar perfeitamente.**
+
+**Bônus para quem usar GNU/Linux:**
+
+- .ycm_extra_conf.py -> arquivo de configuração do plugin [YouCompleteMe](https://github.com/ycm-core/YouCompleteMe "A code-completion engine for Vim") do [Vim](https://www.vim.org/ "Vim - the ubiquitous text editor") (tem que atualizar o conteúdo de acordo com a versão do Python)
+- .vimrc -> arquivo de configuração do [Vim](https://www.vim.org/ "Vim - the ubiquitous text editor") (dentro dele tem as instruções para instalar os plugins)
+
 ---
 
 ## Como Usar o Sistema
