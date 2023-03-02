@@ -112,7 +112,7 @@ Uma vez instalado o sistema, ao excutá-lo conforme o item 4 acima, você terá 
 
 Link do YouTube com a apresentação do funcionamento do software da urna eletrônica:
 
-[https://youtu.be/BbCcCkWUXI4](https://youtu.be/BbCcCkWUXI4 "Link do YouTube")
+[https://youtu.be/hU54aBpu0rU](https://youtu.be/hU54aBpu0rU "Link do YouTube")
 
 ---
 
