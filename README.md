@@ -64,7 +64,7 @@ git clone https://github.com/jmanoel7/urna_eletronica.git
 cd urna_eletronica
 mkdir ./venv
 virtualenv -p /usr/bin/python3.11 ./venv/urna_eletronica
-./venv/urna_eletronica/bin/activate
+source ./venv/urna_eletronica/bin/activate
 pip install -U pip
 pip install -r requirements.txt
 ```
